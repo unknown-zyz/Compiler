@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Lexer {
-    private static final ArrayList<Word> TokenList = new ArrayList<>();
+    private final ArrayList<Word> TokenList = new ArrayList<>();
 
-    private static final HashMap<String, TokenType> reserved = new HashMap<>(){{
+    private final HashMap<String, TokenType> reserved = new HashMap<>(){{
         put("main", TokenType.MAINTK);
         put("const", TokenType.CONSTTK);
         put("int", TokenType.INTTK);
@@ -21,7 +21,7 @@ public class Lexer {
         put("return", TokenType.RETURNTK);
     }};
 
-    private static final HashMap<String, TokenType> symbols = new HashMap<>(){{
+    private final HashMap<String, TokenType> symbols = new HashMap<>(){{
         put("!", TokenType.NOT);
         put("&&", TokenType.AND);
         put("||", TokenType.OR);
@@ -47,7 +47,7 @@ public class Lexer {
         put("}", TokenType.RBRACE);
 
     }};
-    public static void analyse(String str) {
+    public void analyse(String str) {
         int pos = 0;
         int line = 1;
         int len = str.length();
@@ -67,14 +67,8 @@ public class Lexer {
                 }
                 int end = pos;
                 String token = str.substring(start, end);
-                if(reserved.containsKey(token)) {
-                    Word word = new Word(token, reserved.get(token), line);
-                    TokenList.add(word);
-                }
-                else {
-                    Word word = new Word(token, TokenType.IDENFR, line);
-                    TokenList.add(word);
-                }
+                Word word = new Word(token, reserved.getOrDefault(token, TokenType.IDENFR), line);
+                TokenList.add(word);
             }
             else if(Character.isDigit(cur)) {
                 int start = pos;
@@ -169,7 +163,7 @@ public class Lexer {
         }
     }
 
-    public static ArrayList<Word> getTokenList() {
+    public ArrayList<Word> getTokenList() {
         return TokenList;
     }
 }
