@@ -23,14 +23,11 @@ public class InitVal extends non_Terminal {
                    add_analyse(new InitVal());
                }
             }
-            else {}
             if(cur_equal("}"))
             {
                 addChild(new Symbol(cur));
                 next();
             }
-            else {}
         }
-        else{}
     }
 }

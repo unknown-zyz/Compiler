@@ -1,7 +1,6 @@
 package Syntax.Node;
 
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
+import static Syntax.SyntaxMain.*;
 
 public class LVal extends non_Terminal {
     @Override
@@ -17,7 +16,8 @@ public class LVal extends non_Terminal {
                 addChild(new Symbol(cur));
                 next();
             }
-            else {}
+//            else
+//                System.out.println("error k"+getBefore().getLine());
         }
     }
 }

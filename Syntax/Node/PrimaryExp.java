@@ -14,7 +14,6 @@ public class PrimaryExp extends non_Terminal {
                 addChild(new Symbol(cur));
                 next();
             }
-            else {}
         }
         else if(isIdent(cur)) {
             add_analyse(new LVal());
@@ -22,6 +21,5 @@ public class PrimaryExp extends non_Terminal {
         else if(isIntConst(cur)) {
             add_analyse(new Number());
         }
-        else {}
     }
 }

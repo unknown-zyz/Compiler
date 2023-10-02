@@ -20,6 +20,5 @@ public class LAndExp extends non_Terminal {
                 add_analyse(new EqExp());
             }
         }
-        else {}
     }
 }

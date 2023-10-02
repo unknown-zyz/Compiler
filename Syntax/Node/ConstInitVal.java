@@ -27,6 +27,5 @@ public class ConstInitVal extends non_Terminal {
                 next();
             }
         }
-        else {}
     }
 }

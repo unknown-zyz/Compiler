@@ -23,13 +23,11 @@ public class Block extends non_Terminal {
                 {
                     add_analyse(new Stmt());
                 }
-                else {}
             }
             if(cur_equal("}")) {
                 addChild(new Symbol(cur));
                 next();
             }
-            else {}
         }
     }
 }

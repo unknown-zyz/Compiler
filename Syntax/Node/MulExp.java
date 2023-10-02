@@ -20,6 +20,5 @@ public class MulExp extends non_Terminal {
                 add_analyse(new UnaryExp());
             }
         }
-        else {}
     }
 }

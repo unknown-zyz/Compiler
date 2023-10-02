@@ -20,6 +20,5 @@ public class RelExp extends non_Terminal {
                 add_analyse(new AddExp());
             }
         }
-        else {}
     }
 }

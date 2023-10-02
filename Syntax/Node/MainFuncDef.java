@@ -24,12 +24,8 @@ public class MainFuncDef extends non_Terminal {
                         next();
                         add_analyse(new Block());
                     }
-                    else {}
                 }
-                else {}
             }
-            else {}
         }
-        else {}
     }
 }

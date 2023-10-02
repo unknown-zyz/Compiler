@@ -1,30 +1,28 @@
 package Syntax.Node;
 
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
+import static Syntax.SyntaxMain.*;
 
 public class ConstDecl extends non_Terminal {
     public void analyse() {
-        if(cur.getToken().equals("const")) {
+        if(cur_equal("const")) {
             addChild(new Reserved(cur));
             next();
-            if(cur.getToken().equals("int")) {
+            if(cur_equal("int")) {
                 addChild(new Reserved(cur));
                 next();
                 add_analyse(new ConstDef());
-                while(cur.getToken().equals(",")) {
+                while(cur_equal(",")) {
                     addChild(new Symbol(cur));
                     next();
                     add_analyse(new ConstDef());
                 }
-                if(cur.getToken().equals(";")) {
+                if(cur_equal(";")) {
                     addChild(new Symbol(cur));
                     next();
                 }
-                else {}
+//                else
+//                    System.out.println("error i"+getBefore().getLine());
             }
-            else {}
         }
-        else {}
     }
 }

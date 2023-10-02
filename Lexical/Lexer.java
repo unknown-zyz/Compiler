@@ -78,6 +78,8 @@ public class Lexer {
                 int end = pos;
                 String token = str.substring(start, end);
                 Word word = new Word(token, TokenType.INTCON, line);
+//                if(!Syntax.Node.non_Terminal.isFormatString(word))
+//                    System.out.println("error a"+word.getLine());
                 TokenList.add(word);
             }
             else if(cur == '\"') {

@@ -20,6 +20,5 @@ public class LOrExp extends non_Terminal {
                 add_analyse(new LAndExp());
             }
         }
-        else {}
     }
 }

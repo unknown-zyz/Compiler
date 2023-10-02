@@ -7,5 +7,4 @@ public abstract class ASTNode {
         return Syntax.SyntaxMain.cur.getToken().equals(s);
     }
 
-    //get_next,get_next_next
 }

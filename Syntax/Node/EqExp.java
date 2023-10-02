@@ -20,6 +20,5 @@ public class EqExp extends non_Terminal {
                 add_analyse(new RelExp());
             }
         }
-        else {}
     }
 }

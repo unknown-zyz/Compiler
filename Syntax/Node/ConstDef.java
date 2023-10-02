@@ -1,7 +1,6 @@
 package Syntax.Node;
 
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
+import static Syntax.SyntaxMain.*;
 
 public class ConstDef extends non_Terminal {
     public void analyse() {
@@ -19,7 +18,8 @@ public class ConstDef extends non_Terminal {
                     addChild(new Symbol(cur));
                     next();
                 }
-                else {}
+//                else
+//                    System.out.println("error k"+getBefore().getLine());
             }
             if(cur_equal("="))
             {
@@ -27,8 +27,6 @@ public class ConstDef extends non_Terminal {
                 next();
                 add_analyse(new ConstInitVal());
             }
-            else {}
         }
-        else {}
     }
 }

@@ -14,6 +14,5 @@ public class FuncFParams extends non_Terminal {
                 add_analyse(new FuncFParam());
             }
         }
-        else {}
     }
 }

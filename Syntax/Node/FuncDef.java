@@ -1,7 +1,6 @@
 package Syntax.Node;
 
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
+import static Syntax.SyntaxMain.*;
 
 public class FuncDef extends non_Terminal {
     @Override
@@ -21,11 +20,11 @@ public class FuncDef extends non_Terminal {
                         next();
                         add_analyse(new Block());
                     }
-                    else {}
+//                    else
+//                    add_analyse(new Block());     //????
+//                        System.out.println("error j"+getBefore().getLine());
                 }
-                else {}
             }
         }
-        else {}
     }
 }

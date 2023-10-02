@@ -14,13 +14,15 @@ public class Stmt extends non_Terminal {
             addChild(new Symbol(cur));
             next();
         }
-        // Exp;
+        // Exp;//注意此处没有isIdent，留到后面判断
         else if(cur_equal("(")||cur_equal("+")||cur_equal("-")||cur_equal("!")|| isIntConst(cur)) {
             add_analyse(new Exp());
             if(cur_equal(";")) {
                 addChild(new Symbol(cur));
                 next();
             }
+//            else
+//                System.out.println("error i"+getBefore().getLine());
         }
         else if(cur_equal("if")) {
             addChild(new Reserved(cur));
@@ -39,9 +41,9 @@ public class Stmt extends non_Terminal {
                         add_analyse(new Stmt());
                     }
                 }
-                else {}
+//                else
+//                    System.out.println("error j"+getBefore().getLine());
             }
-            else {}
         }
         else if(cur_equal("for")) {
             addChild(new Reserved(cur));
@@ -71,8 +73,14 @@ public class Stmt extends non_Terminal {
                             add_analyse(new Stmt());
                         }
                     }
+//                    else
+//                        System.out.println("error i"+getBefore().getLine());
                 }
+//                else
+//                    System.out.println("error i"+getBefore().getLine());
             }
+//            else
+//                System.out.println("error j"+getBefore().getLine());
         }
         else if(cur_equal("continue")||cur_equal("break")) {
             addChild(new Reserved(cur));
@@ -82,6 +90,8 @@ public class Stmt extends non_Terminal {
                 addChild(new Symbol(cur));
                 next();
             }
+//            else
+//                System.out.println("error i"+getBefore().getLine());
         }
         else if(cur_equal("return")) {
             addChild(new Reserved(cur));
@@ -98,7 +108,11 @@ public class Stmt extends non_Terminal {
                     addChild(new Symbol(cur));
                     next();
                 }
+//                else
+//                    System.out.println("error i"+getBefore().getLine());
             }
+//            else
+//                System.out.println("error i"+getBefore().getLine());
         }
         else if(cur_equal("printf")) {
             addChild(new Reserved(cur));
@@ -123,7 +137,11 @@ public class Stmt extends non_Terminal {
                             addChild(new Symbol(cur));
                             next();
                         }
+//                        else
+//                            System.out.println("error i"+getBefore().getLine());
                     }
+//                    else
+//                        System.out.println("error j"+getBefore().getLine());
                 }
             }
         }
@@ -150,7 +168,11 @@ public class Stmt extends non_Terminal {
                                     addChild(new Symbol(cur));
                                     next();
                                 }
+//                                else
+//                                    System.out.println("error i"+getBefore().getLine());
                             }
+//                            else
+//                                System.out.println("error j"+getBefore().getLine());
                         }
                     }
                     else if(cur_equal("(")||cur_equal("+")||cur_equal("-")||cur_equal("!")||isIdent(cur)|| isIntConst(cur)) {
@@ -159,10 +181,10 @@ public class Stmt extends non_Terminal {
                             addChild(new Symbol(cur));
                             next();
                         }
+//                        else
+//                            System.out.println("error i"+getBefore().getLine());
                     }
-                    else {}
                 }
-                else {}
             }
             else {
                 add_analyse(new Exp());
@@ -170,9 +192,9 @@ public class Stmt extends non_Terminal {
                     addChild(new Symbol(cur));
                     next();
                 }
-                else {}
+//                else
+//                    System.out.println("error i"+getBefore().getLine());
             }
         }
-        else {}
     }
 }

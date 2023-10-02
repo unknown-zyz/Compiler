@@ -32,7 +32,14 @@ public class SyntaxMain {
             index++;
         }
     }
-
+    public static Word getBefore() {
+        if(index>0) {
+            return tokenList.get(index-1);
+        }
+        else {
+            return new Word("", TokenType.INTTK, 0);
+        }
+    }
     public static Word getNext() {
         if(index<tokenList.size()) {
             return tokenList.get(index);
@@ -59,8 +66,8 @@ public class SyntaxMain {
         compUnit.print();
     }
 
-//    public void printChild() {
-//        lOrExp.printChild();
-//    }
+    public void printChild() {
+       compUnit.printChild();
+    }
 
 }

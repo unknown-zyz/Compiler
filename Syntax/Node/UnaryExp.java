@@ -24,12 +24,12 @@ public class UnaryExp extends non_Terminal {
                     addChild(new Symbol(cur));
                     next();
                 }
-                else {}
+//                else
+//                    System.out.println("error j"+getBefore().getLine());
             }
             else {
                 add_analyse(new PrimaryExp());
             }
         }
-        else {}
     }
 }
