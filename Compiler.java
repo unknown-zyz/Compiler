@@ -25,10 +25,17 @@ public class Compiler {
 //                fw.write(word.getType() + " " + word.getToken()+"\n");
 //            }
 //            fw.close();
+
             SyntaxMain.setTokenList(tokenList);
             SyntaxMain syntaxMain = new SyntaxMain();
             syntaxMain.analyse();
+            FileOutputStream fileOut = new FileOutputStream("output.txt");
+            PrintStream printOut = new PrintStream(fileOut);
+            System.setOut(printOut);
             syntaxMain.printAST();
+            printOut.close();
+            fileOut.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

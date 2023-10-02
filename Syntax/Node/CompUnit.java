@@ -1,25 +1,23 @@
 package Syntax.Node;
 
-import Error.error;
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
-
+import static Syntax.SyntaxMain.*;
 
 public class CompUnit extends non_Terminal {
+    @Override
     public void analyse() {
-        if(cur.getToken().equals("int")) {
-            DeclNode declNode = new DeclNode();
-            child.add(declNode);
-            declNode.analyse();
+        while((cur_equal("const") && getNext().getToken().equals("int")) ||
+                (cur_equal("int")&&isIdent(getNext())&&!getNextNext().getToken().equals("(")))
+        {
+            if(cur_equal("const"))
+                add_analyse(new ConstDecl());
+            else
+                add_analyse(new VarDecl());
         }
-        else {
-            new error();
+        while((cur_equal("void") || cur_equal("int")) && isIdent(getNext()) && getNextNext().getToken().equals("("))
+        {
+            add_analyse(new FuncDef());
         }
-        next();
-        Ident ident = new Ident(cur);
-        child.add(ident);
-        next();
-        Symbol symbol = new Symbol(cur);
-        child.add(symbol);
+        if(cur_equal("int") && getNext().getToken().equals("main"))
+            add_analyse(new MainFuncDef());
     }
 }

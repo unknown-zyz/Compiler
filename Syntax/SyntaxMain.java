@@ -1,5 +1,6 @@
 package Syntax;
 
+import Lexical.TokenType;
 import Lexical.Word;
 import Syntax.Node.CompUnit;
 
@@ -15,18 +16,51 @@ public class SyntaxMain {
         SyntaxMain.tokenList = tokenList;
     }
 
+    public static boolean isLVal() {
+        int i = index, flag = 0;
+        for(;i<tokenList.size() && flag==0; i++)
+        {
+            if(tokenList.get(i).getToken().equals("="))    return true;
+            if(tokenList.get(i).getToken().equals(";"))    flag=1;
+        }
+        return false;
+    }
+
     public static void next() {
-        cur = tokenList.get(index);
-        index++;
+        if(index<tokenList.size()) {
+            cur = tokenList.get(index);
+            index++;
+        }
+    }
+
+    public static Word getNext() {
+        if(index<tokenList.size()) {
+            return tokenList.get(index);
+        }
+        else {
+            return new Word("", TokenType.INTTK, 0);
+        }
+    }
+
+    public static Word getNextNext() {
+        if(index + 1<tokenList.size()) {
+            return tokenList.get(index+1);
+        }
+        else {
+            return new Word("", TokenType.INTTK, 0);
+        }
     }
 
     public void analyse() {
         next();
-        compUnit.analyse();
-    }
+        compUnit.analyse();}
 
     public void printAST() {
         compUnit.print();
     }
+
+//    public void printChild() {
+//        lOrExp.printChild();
+//    }
 
 }

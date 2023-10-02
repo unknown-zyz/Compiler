@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Lexer {
     private final ArrayList<Word> TokenList = new ArrayList<>();
 
-    private final HashMap<String, TokenType> reserved = new HashMap<>(){{
+    public static final HashMap<String, TokenType> reserved = new HashMap<>(){{
         put("main", TokenType.MAINTK);
         put("const", TokenType.CONSTTK);
         put("int", TokenType.INTTK);
@@ -21,7 +21,7 @@ public class Lexer {
         put("return", TokenType.RETURNTK);
     }};
 
-    private final HashMap<String, TokenType> symbols = new HashMap<>(){{
+    public static final HashMap<String, TokenType> symbols = new HashMap<>(){{
         put("!", TokenType.NOT);
         put("&&", TokenType.AND);
         put("||", TokenType.OR);

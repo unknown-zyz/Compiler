@@ -1,9 +1,9 @@
 package Lexical;
 
 public class Word {
-    private String token;
-    private TokenType type;
-    private int line;
+    private final String token;
+    private final TokenType type;
+    private final int line;
 
     public Word(String token, TokenType type, int line) {
         this.token = token;

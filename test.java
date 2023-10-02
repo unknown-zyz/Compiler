@@ -1,16 +1,18 @@
+import Lexical.TokenType;
+import Lexical.Word;
+import Syntax.Node.AddExp;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static Syntax.Node.non_Terminal.isFormatString;
+import static Syntax.Node.non_Terminal.isIdent;
+import static Syntax.SyntaxMain.next;
+
 public class test{
     public static void main(String[] args) {
-        String output = "Hello, World!"; // 将要写入到文件的输出内容
-
-        try {
-            FileWriter writer = new FileWriter("output.txt");
-            writer.write(output); // 将输出内容写入文件
-            writer.close(); // 关闭文件写入器
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(isFormatString(new Word("\"A%d\"", TokenType.INTTK, 1)));
+        if((true||false)&&false)
+            System.out.println("1");
     }
 }
