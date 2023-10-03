@@ -45,7 +45,6 @@ public class Lexer {
         put("]", TokenType.RBRACK);
         put("{", TokenType.LBRACE);
         put("}", TokenType.RBRACE);
-
     }};
     public void analyse(String str) {
         int pos = 0;
