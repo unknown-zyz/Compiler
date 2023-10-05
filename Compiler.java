@@ -29,10 +29,18 @@ public class Compiler {
             SyntaxMain.setTokenList(tokenList);
             SyntaxMain syntaxMain = new SyntaxMain();
             syntaxMain.analyse();
+
+            FileOutputStream AST_fileOut = new FileOutputStream("AST.txt");
+            PrintStream AST_printOut = new PrintStream(AST_fileOut);
+            System.setOut(AST_printOut);
+            syntaxMain.printAST();
+            AST_printOut.close();
+            AST_fileOut.close();
+
             FileOutputStream fileOut = new FileOutputStream("output.txt");
             PrintStream printOut = new PrintStream(fileOut);
             System.setOut(printOut);
-            syntaxMain.printAST();
+            syntaxMain.print();
             printOut.close();
             fileOut.close();
 

@@ -60,12 +60,13 @@ public abstract class non_Terminal extends ASTNode {
         }
         System.out.println("<"+this.getClass().getSimpleName()+">");
     }
-    public void printChild() {
+
+    public void printChild(int step) {
+        for(int i=0;i<step;i++)
+            System.out.print("\t");
+        System.out.println("<"+this.getClass().getSimpleName()+">");
         for(ASTNode node: getChild())
-        {
-            if(node instanceof non_Terminal)
-                ((non_Terminal)node).printChild();
-        }
-        System.out.println("<"+this.getClass().getSimpleName()+">"+getChild());
+            node.printChild(step+1);
+
     }
 }

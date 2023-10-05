@@ -62,12 +62,13 @@ public class SyntaxMain {
         next();
         compUnit.analyse();}
 
-    public void printAST() {
+    public void print() {
         compUnit.print();
     }
 
-    public void printChild() {
-       compUnit.printChild();
+    public void printAST() {
+        int step = 0;
+        compUnit.printChild(step);
     }
 
 }
