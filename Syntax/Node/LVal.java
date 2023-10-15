@@ -1,13 +1,18 @@
 package Syntax.Node;
 
 import static Syntax.SyntaxMain.*;
+import Error.ErrorType;
 
 public class LVal extends non_Terminal {
     @Override
-    public void analyse() {
+    public void analyse()
+    {
+        if(!queryGlobalSymbol(cur.getToken()))
+            addError(ErrorType.c, cur.getLine());
         addChild(new Ident(cur));
         next();
-        while (cur_equal("[")) {
+        while (cur_equal("["))
+        {
             addChild(new Symbol(cur));
             next();
             add_analyse(new Exp());
@@ -16,8 +21,8 @@ public class LVal extends non_Terminal {
                 addChild(new Symbol(cur));
                 next();
             }
-//            else
-//                System.out.println("error k"+getBefore().getLine());
+            else
+                addError(ErrorType.k);
         }
     }
 }

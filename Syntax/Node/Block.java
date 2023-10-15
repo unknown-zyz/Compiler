@@ -1,12 +1,14 @@
 package Syntax.Node;
 
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
+import static Syntax.SyntaxMain.*;
 
 public class Block extends non_Terminal {
+
     @Override
-    public void analyse() {
-        if(cur_equal("{")) {
+    public void analyse()
+    {
+        if(cur_equal("{"))
+        {
             addChild(new Symbol(cur));
             next();
             while(cur_equal("const")||cur_equal("int")||isIdent(cur)||cur_equal("(")||cur_equal("+")||cur_equal("-")||cur_equal("!")|| isIntConst(cur)||cur_equal(";")|| cur_equal("{")||cur_equal("if")||cur_equal("for")||cur_equal("continue")||cur_equal("break")|| cur_equal("return")||cur_equal("printf"))
@@ -28,6 +30,8 @@ public class Block extends non_Terminal {
                 addChild(new Symbol(cur));
                 next();
             }
+            if(curTable.getPre()!=null)
+                curTable = curTable.getPre();
         }
     }
 }

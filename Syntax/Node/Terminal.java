@@ -13,4 +13,8 @@ public abstract class Terminal extends ASTNode {
             System.out.print("\t");
         System.out.println(word.getToken());
     }
+
+    public Word getWord() {
+        return word;
+    }
 }

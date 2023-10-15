@@ -1,7 +1,11 @@
 package Lexical;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static Config.Config.TokenPath;
 
 public class Lexer {
     private final ArrayList<Word> TokenList = new ArrayList<>();
@@ -166,5 +170,13 @@ public class Lexer {
 
     public ArrayList<Word> getTokenList() {
         return TokenList;
+    }
+
+    public void print() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(TokenPath);
+        for (Word word : TokenList) {
+            writer.println(word.getType() + " " + word.getToken());
+        }
+        writer.close();
     }
 }

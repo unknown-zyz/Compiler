@@ -1,11 +1,18 @@
 package Syntax.Node;
 
-import static Syntax.SyntaxMain.cur;
-import static Syntax.SyntaxMain.next;
+import Symbols.SymbolTable;
+import Error.ErrorType;
+
+import static Syntax.SyntaxMain.*;
+import static Syntax.SyntaxMain.curTable;
+import static Syntax.Node.FuncDef.isFuncReturn;
 
 public class MainFuncDef extends non_Terminal {
     @Override
-    public void analyse() {
+    public void analyse()
+    {
+        isFuncReturn = false;
+        needReturn = true;
         if(cur_equal("int"))
         {
             addChild(new Reserved(cur));
@@ -22,8 +29,15 @@ public class MainFuncDef extends non_Terminal {
                     {
                         addChild(new Symbol(cur));
                         next();
-                        add_analyse(new Block());
                     }
+                    else
+                        addError(ErrorType.j);
+                    //新作用域
+                    addSymbolTable(new SymbolTable(curTable));
+                    add_analyse(new Block());
+                    if(needReturn && !isFuncReturn)
+                        addError(ErrorType.g, cur.getLine());
+                    needReturn = false;
                 }
             }
         }

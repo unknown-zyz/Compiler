@@ -5,6 +5,7 @@ import Lexical.Word;
 import java.util.ArrayList;
 
 import static Lexical.Lexer.reserved;
+import static Syntax.Node.Stmt.addCnt;
 
 public abstract class non_Terminal extends ASTNode {
     public abstract void analyse();
@@ -37,6 +38,7 @@ public abstract class non_Terminal extends ASTNode {
             char ch = str.charAt(i);
             if(ch=='%')
             {
+                addCnt();
                 if(str.charAt(i+1)!='d')
                     return false;
                 i++;continue;

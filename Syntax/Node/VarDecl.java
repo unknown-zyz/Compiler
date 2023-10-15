@@ -1,6 +1,7 @@
 package Syntax.Node;
 
 import static Syntax.SyntaxMain.*;
+import Error.ErrorType;
 
 public class VarDecl extends non_Terminal {
     @Override
@@ -20,8 +21,8 @@ public class VarDecl extends non_Terminal {
                 addChild(new Symbol(cur));
                 next();
             }
-//            else
-//                System.out.println("error i"+getBefore().getLine());
+            else
+                addError(ErrorType.i);
         }
     }
 }
