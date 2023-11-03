@@ -13,6 +13,16 @@ public abstract class non_Terminal extends ASTNode {
     public ArrayList<ASTNode> getChild() {
         return child;
     }
+    public <T extends ASTNode>T getChild(int i, Class<T> tClass) {
+        if(tClass.isInstance(getChild().get(i)))
+            return tClass.cast(getChild().get(i));
+        return null;
+    }
+    public String getChild(int i) {
+        if(i<getChild().size() && getChild().get(i) instanceof Terminal)
+            return ((Terminal)getChild().get(i)).getWord().getToken();
+        return null;
+    }
     public void addChild(ASTNode node) {
         child.add(node);
     }

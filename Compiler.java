@@ -1,6 +1,10 @@
+import LLVM.IRModule;
+import LLVM.Visitor;
 import Lexical.Lexer;
 import Lexical.Word;
+import Syntax.Node.CompUnit;
 import Syntax.SyntaxMain;
+import Utils.IROutput;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ public class Compiler {
     public static void main(String[] args) {
         try
         {
+            init();
             BufferedReader br = new BufferedReader(new FileReader(InputPath));
             String str = br.readLine();
             StringBuilder article = new StringBuilder();
@@ -30,12 +35,14 @@ public class Compiler {
             SyntaxMain syntaxMain = new SyntaxMain();
             syntaxMain.analyse();
 
-//            FileOutputStream AST_fileOut = new FileOutputStream("AST.txt");
-//            PrintStream AST_printOut = new PrintStream(AST_fileOut);
-//            System.setOut(AST_printOut);
-//            syntaxMain.printAST();
-//            AST_printOut.close();
-//            AST_fileOut.close();
+            PrintStream originalOut = System.out;
+
+            FileOutputStream AST_fileOut = new FileOutputStream("AST.txt");
+            PrintStream AST_printOut = new PrintStream(AST_fileOut);
+            System.setOut(AST_printOut);
+            syntaxMain.printAST();
+            AST_printOut.close();
+            AST_fileOut.close();
 //
 //            printSymbolTable();
             if(isErrorEmpty())
@@ -49,13 +56,18 @@ public class Compiler {
                     printOut.close();
                     fileOut.close();
                 }
+                if(LLVM_Switch)
+                {
+                    System.setOut(originalOut);
+                    IRModule module = new Visitor().visit((CompUnit) syntaxMain.getAST());
+                    IROutput.ModuleOutput(module, LLVMPath);
+                }
             }
             else
             {
                 if(Error_Switch)    syntaxMain.printError();
             }
-//            Generator generator = new Generator();
-//            generator.generate(syntaxMain.getAST());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
