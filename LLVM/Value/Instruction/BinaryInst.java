@@ -1,6 +1,7 @@
 package LLVM.Value.Instruction;
 
 import LLVM.Value.Value;
+import LLVM.type.IntType;
 import LLVM.type.Type;
 
 public class BinaryInst extends Instruction{
@@ -14,6 +15,11 @@ public class BinaryInst extends Instruction{
     public String toString() {
         Value left = getOperand(0);
         Value right = getOperand(1);
-        return getName() + " = " + getOp() + " " + getType() + " " + left.getName() + ", " + right.getName();
+        Type type;
+        if(left.getType() == IntType.I32 && right.getType() == IntType.I32)
+            type = IntType.I32;
+        else
+            type = IntType.I1;
+        return getName() + " = " + getOp() + " " + type + " " + left.getName() + ", " + right.getName();
     }
 }

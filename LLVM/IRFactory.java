@@ -44,7 +44,7 @@ public class IRFactory {
 
     public BasicBlock buildBasicBlock(Function function){
         BasicBlock bb = new BasicBlock(function);
-        function.setBasicBlock(bb);
+        function.addBasicBlock(bb);
         return bb;
     }
 
@@ -63,7 +63,10 @@ public class IRFactory {
     }
 
     public BinaryInst buildBinaryInst(Value left, Value right, Operator op, BasicBlock bb) {
-        BinaryInst binaryInst = new BinaryInst(op, left, right, IntType.I32);
+        Type type = op.isBoolean() ? IntType.I1 : IntType.I32;
+        if(left.getType() == IntType.I1 || right.getType() == IntType.I1)
+            type = IntType.I1;
+        BinaryInst binaryInst = new BinaryInst(op, left, right, type);
         bb.addInst(binaryInst);
         return binaryInst;
     }
@@ -90,5 +93,16 @@ public class IRFactory {
         CallInst callInst = new CallInst(function, values);
         bb.addInst(callInst);
         return callInst;
+    }
+
+    public BrInst buildBrInst(BasicBlock jumpBlock, BasicBlock bb) {
+        BrInst brInst = new BrInst(jumpBlock);
+        bb.addInst(brInst);
+        return brInst;
+    }
+    public BrInst buildBrInst(Value value, BasicBlock trueBlock, BasicBlock falseBlock, BasicBlock bb) {
+        BrInst brInst = new BrInst(value, trueBlock, falseBlock);
+        bb.addInst(brInst);
+        return brInst;
     }
 }

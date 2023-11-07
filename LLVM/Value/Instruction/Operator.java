@@ -47,7 +47,7 @@ public enum Operator {
     Move,
     BitCast;
 
-    public boolean isCmpOP(){
+    public boolean isBoolean(){
         String name = name();
         return switch (name) {
             case "Ne", "FNe", "Eq", "FEq", "Lt", "Le", "FLt", "Gt", "FLe", "FGt", "Ge", "FGe" -> true;

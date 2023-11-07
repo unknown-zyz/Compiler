@@ -2,7 +2,6 @@ package LLVM;
 
 import LLVM.Value.*;
 import LLVM.Value.Instruction.AllocInst;
-import LLVM.Value.Instruction.BinaryInst;
 import LLVM.Value.Instruction.Operator;
 import LLVM.type.IntType;
 import LLVM.type.PointerType;
@@ -22,6 +21,7 @@ public class Visitor {
     private final ArrayList<GlobalVar> globalVars = new ArrayList<>();
     private final ArrayList<HashMap<String, Value>> symbolTables = new ArrayList<>();
     private final IRFactory f = new IRFactory();
+    private int GlobalInt = 0;
 
     //符号表
     private void pushSymbol(String str, Value value){
@@ -269,7 +269,25 @@ public class Visitor {
             if(str.equals(";")) {
 
             } else if(str.equals("if")) {
-
+                BasicBlock trueBlock = f.buildBasicBlock(curFunction);
+                BasicBlock nextBlock = f.buildBasicBlock(curFunction);
+                BasicBlock falseBlock = null;
+                boolean elseFlag = (stmt.getChild().size() > 5);
+                if(elseFlag) {
+                    falseBlock = f.buildBasicBlock(curFunction);
+                    visitCond(stmt.getChild(2, Cond.class), trueBlock, falseBlock);
+                }
+                else
+                    visitCond(stmt.getChild(2, Cond.class), trueBlock, nextBlock);
+                curBB = trueBlock;
+                visitStmt(stmt.getChild(4, Stmt.class));
+                f.buildBrInst(nextBlock, curBB);
+                if(elseFlag) {
+                    curBB = falseBlock;
+                    visitStmt(stmt.getChild(6, Stmt.class));
+                    f.buildBrInst(nextBlock, curBB);
+                }
+                curBB = nextBlock;
             } else if(str.equals("for")) {
 
             } else if(str.equals("break")) {
@@ -325,6 +343,11 @@ public class Visitor {
             visitAddExp(exp.getChild(0, AddExp.class));
     }
 
+    public void visitCond(Cond cond, BasicBlock trueBlock, BasicBlock falseBlock) {
+        // Cond → LOrExp
+        visitLorExp(cond.getChild(0, LOrExp.class), trueBlock, falseBlock);
+    }
+
     public void visitLVal(LVal lVal, boolean isAssign) {
         // LVal → Ident {'[' Exp ']'}
         Ident ident = lVal.getChild(0, Ident.class);
@@ -345,7 +368,6 @@ public class Visitor {
         } else {
             visitNumber(primaryExp.getChild(0, Number.class));
         }
-
     }
 
     public void visitNumber(Number number) {
@@ -357,13 +379,16 @@ public class Visitor {
         ASTNode node = unaryExp.getChild().get(0);
         if(node instanceof UnaryOp) {
             String str = unaryExp.getChild(0, UnaryOp.class).getChild(0);
-            if(str.equals("+")) {
-                visitUnaryExp(unaryExp.getChild(1, UnaryExp.class));
-            } else if(str.equals("-")) {
-                visitUnaryExp(unaryExp.getChild(1, UnaryExp.class));
-                curValue = f.buildBinaryInst(f.buildNumber("0"), curValue, Operator.Sub, curBB);
-            } else if(str.equals("!")){
-
+            switch (str) {
+                case "+" -> visitUnaryExp(unaryExp.getChild(1, UnaryExp.class));
+                case "-" -> {
+                    visitUnaryExp(unaryExp.getChild(1, UnaryExp.class));
+                    curValue = f.buildBinaryInst(f.buildNumber("0"), curValue, Operator.Sub, curBB);
+                }
+                case "!" -> {
+                    visitUnaryExp(unaryExp.getChild(1, UnaryExp.class));
+                    curValue = f.buildBinaryInst(curValue, f.buildNumber("0"), Operator.Eq, curBB);
+                }
             }
         } else if(node instanceof Ident) {
             String ident = unaryExp.getChild(0);
@@ -382,12 +407,6 @@ public class Visitor {
             visitPrimaryExp(unaryExp.getChild(0, PrimaryExp.class));
     }
 
-    public void visitFuncRParams(FuncRParams funcRParams) {
-        for(int i = 0; i < funcRParams.getChild().size(); i += 2) {
-            visitExp(funcRParams.getChild(i, Exp.class), false);
-        }
-    }
-
     public void visitMulExp(MulExp mulExp) {
         ASTNode node = mulExp.getChild().get(0);
         if(node instanceof UnaryExp)
@@ -397,22 +416,12 @@ public class Visitor {
             for(int i = 2; i < mulExp.getChild().size()-2; i += 2) {
                 Value tmpValue = curValue;
                 visitMulExp(mulExp.getChild(i, MulExp.class));
-                Operator op = switch (mulExp.getChild(i-1)) {
-                    case "*" -> Operator.Mul;
-                    case "/" -> Operator.Div;
-                    case "%" -> Operator.Mod;
-                    default -> throw new IllegalStateException("Unexpected value in MulExp: " + mulExp.getChild(i-1));
-                };
+                Operator op = Operator.str2op(mulExp.getChild(i-1));
                 curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
             }
             Value tmpValue = curValue;
             visitUnaryExp(mulExp.getChild(mulExp.getChild().size()-1, UnaryExp.class));
-            Operator op = switch (mulExp.getChild(mulExp.getChild().size()-2)) {
-                case "*" -> Operator.Mul;
-                case "/" -> Operator.Div;
-                case "%" -> Operator.Mod;
-                default -> throw new IllegalStateException("Unexpected value in MulExp: " + mulExp.getChild(mulExp.getChild().size()-2));
-            };
+            Operator op = Operator.str2op(mulExp.getChild(mulExp.getChild().size()-2));
             curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
         }
     }
@@ -426,14 +435,84 @@ public class Visitor {
             for(int i = 2; i < addExp.getChild().size()-2; i += 2) {
                 Value tmpValue = curValue;
                 visitAddExp(addExp.getChild(i, AddExp.class));
-                Operator op = addExp.getChild(i-1).equals("+") ? Operator.Add : Operator.Sub;
+                Operator op = Operator.str2op(addExp.getChild(i-1));
                 curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
             }
             Value tmpValue = curValue;
             visitMulExp(addExp.getChild(addExp.getChild().size()-1, MulExp.class));
-            Operator op = addExp.getChild(addExp.getChild().size()-2).equals("+") ? Operator.Add : Operator.Sub;
+            Operator op = Operator.str2op(addExp.getChild(addExp.getChild().size()-2));
             curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
         }
+    }
+
+    public void visitRelExp(RelExp relExp) {
+        ASTNode node = relExp.getChild().get(0);
+        if(node instanceof AddExp)
+            visitAddExp(relExp.getChild(0, AddExp.class));
+        else {
+            visitRelExp(relExp.getChild(0, RelExp.class));
+            for(int i = 2; i < relExp.getChild().size()-2; i += 2) {
+                Value tmpValue = curValue;
+                visitRelExp(relExp.getChild(i, RelExp.class));
+                Operator op = Operator.str2op(relExp.getChild(i-1));
+                curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
+            }
+            Value tmpValue = curValue;
+            visitAddExp(relExp.getChild(relExp.getChild().size()-1, AddExp.class));
+            Operator op = Operator.str2op(relExp.getChild(relExp.getChild().size()-2));
+            curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
+        }
+    }
+
+    public void visitEqExp(EqExp eqExp) {
+        ASTNode node = eqExp.getChild().get(0);
+        if(node instanceof RelExp)
+            visitRelExp(eqExp.getChild(0, RelExp.class));
+        else {
+            visitEqExp(eqExp.getChild(0, EqExp.class));
+            for(int i = 2; i < eqExp.getChild().size()-2; i += 2) {
+                Value tmpValue = curValue;
+                visitEqExp(eqExp.getChild(i, EqExp.class));
+                Operator op = Operator.str2op(eqExp.getChild(i-1));
+                curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
+            }
+            Value tmpValue = curValue;
+            visitRelExp(eqExp.getChild(eqExp.getChild().size()-1, RelExp.class));
+            Operator op = Operator.str2op(eqExp.getChild(eqExp.getChild().size()-2));
+            curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
+        }
+    }
+
+    public void visitLAndExp(LAndExp lAndExp, BasicBlock trueBlock, BasicBlock falseBlock) {
+        ASTNode node = lAndExp.getChild().get(0);
+        if(node instanceof EqExp)
+            visitEqExp(lAndExp.getChild(0, EqExp.class));
+        else {
+            for(int i = 0; i < lAndExp.getChild().size()-2; i += 2) {
+                BasicBlock nextBlock = f.buildBasicBlock(curFunction);
+                visitLAndExp(lAndExp.getChild(i, LAndExp.class), nextBlock, falseBlock);
+                curBB = nextBlock;
+            }
+            visitEqExp(lAndExp.getChild(lAndExp.getChild().size()-1, EqExp.class));
+        }
+        curValue = f.buildBinaryInst(curValue, f.buildNumber("0"), Operator.Ne, curBB);
+        f.buildBrInst(curValue, trueBlock, falseBlock, curBB);
+    }
+
+    public void visitLorExp(LOrExp lOrExp, BasicBlock trueBlock, BasicBlock falseBlock) {
+        ASTNode node = lOrExp.getChild().get(0);
+        if(node instanceof LAndExp)
+            visitLAndExp(lOrExp.getChild(0, LAndExp.class), trueBlock, falseBlock);
+        else {
+            for(int i = 0; i < lOrExp.getChild().size()-2; i += 2) {
+                BasicBlock nextBlock = f.buildBasicBlock(curFunction);
+                visitLorExp(lOrExp.getChild(i, LOrExp.class), trueBlock, nextBlock);
+                curBB = nextBlock;
+            }
+            visitLAndExp(lOrExp.getChild(lOrExp.getChild().size()-1, LAndExp.class), trueBlock, falseBlock);
+        }
+//        curValue = f.buildBinaryInst(curValue, f.buildNumber("0"), Operator.Ne, curBB);
+//        f.buildBrInst(curValue, trueBlock, falseBlock, curBB);
     }
 
     public void initLibFunc() {
@@ -442,7 +521,6 @@ public class Visitor {
         func_putstr.addArg(new Argument("str", new PointerType(IntType.I8), func_putstr));
     }
 
-    private int GlobalInt = 0;
     public int visitGlobalAddExp(AddExp addExp) {
         ASTNode node = addExp.getChild().get(0);
         if(node instanceof MulExp)

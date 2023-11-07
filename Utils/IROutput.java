@@ -29,7 +29,7 @@ public class IROutput {
         out.write("declare i32 @getint()\n");
         out.write("declare void @putint(i32)\n");
         out.write("declare void @putch(i32)\n");
-        out.write("declare void @putstr(i8*)\n\n");
+        out.write("declare void @putstr(i8*)\n");
     }
     private static void FunctionOutput(Function function) throws IOException {
         out.write("define dso_local ");
@@ -46,7 +46,8 @@ public class IROutput {
                 out.write(", ");
         }
         out.write("){\n");
-        BasicBlockOutput(function.getBasicBlock());
+        for(BasicBlock bb:function.getBasicBlock())
+            BasicBlockOutput(bb);
         out.write("}\n");
     }
 
@@ -56,11 +57,13 @@ public class IROutput {
         for(Argument arg : args){
             arg.setName("%" + ++cnt);
         }
-        BasicBlock bb = function.getBasicBlock();
-        for(Instruction inst: bb.getInsts()) {
-            if (inst.hasValue())
-            {
-                inst.setName("%" + ++cnt);
+        for(BasicBlock bb:function.getBasicBlock())
+        {
+            for(Instruction inst: bb.getInsts()) {
+                if (inst.hasValue())
+                {
+                    inst.setName("%" + ++cnt);
+                }
             }
         }
     }
@@ -82,6 +85,7 @@ public class IROutput {
     public static void ModuleOutput(IRModule module, String filename) throws IOException {
         out = new BufferedWriter(new FileWriter(filename));
         LibFuncOutput();
+        out.write("\n");
         ArrayList<GlobalVar> globalVars = module.getGlobalVars();
         ArrayList<Function> functions = module.getFunctions();
         for(GlobalVar globalVar:globalVars)

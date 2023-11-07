@@ -5,19 +5,20 @@ import LLVM.type.Type;
 import java.util.ArrayList;
 
 public class Function extends Value {
-    private BasicBlock basicBlock;
+    private ArrayList<BasicBlock> bbs;
     private final ArrayList<Argument> args;
     public Function(String name, Type type) {
         super(name, type);
         this.args = new ArrayList<>();
+        this.bbs = new ArrayList<>();
     }
 
-    public BasicBlock getBasicBlock() {
-        return basicBlock;
+    public ArrayList<BasicBlock> getBasicBlock() {
+        return bbs;
     }
 
-    public void setBasicBlock(BasicBlock basicBlock) {
-        this.basicBlock = basicBlock;
+    public void addBasicBlock(BasicBlock basicBlock) {
+        this.bbs.add(basicBlock);
     }
 
     public ArrayList<Argument> getArgs() {
