@@ -9,106 +9,256 @@
 			<VarDecl>
 				int
 				<VarDef>
-					a
+					a1
+					=
+					<InitVal>
+						<Exp>
+							<AddExp>
+								<MulExp>
+									<UnaryExp>
+										<PrimaryExp>
+											<Number>
+												1
+				,
+				<VarDef>
+					a2
 				;
 			<Stmt>
 				<LVal>
-					a
+					a2
 				=
 				<Exp>
 					<AddExp>
 						<MulExp>
 							<UnaryExp>
 								<PrimaryExp>
-									<Number>
-										10
+									<LVal>
+										a1
+				;
+			<VarDecl>
+				int
+				<VarDef>
+					temp
+				;
+			<VarDecl>
+				int
+				<VarDef>
+					n
+				,
+				<VarDef>
+					i
 				;
 			<Stmt>
-				if
+				<LVal>
+					n
+				=
+				getint
 				(
+				)
+				;
+			<Stmt>
+				for
+				(
+				<ForStmt>
+					<LVal>
+						i
+					=
+					<Exp>
+						<AddExp>
+							<MulExp>
+								<MulExp>
+									<UnaryExp>
+										<PrimaryExp>
+											<LVal>
+												a1
+								*
+								<UnaryExp>
+									<PrimaryExp>
+										<LVal>
+											a1
+				;
 				<Cond>
 					<LOrExp>
 						<LAndExp>
 							<EqExp>
 								<RelExp>
+									<RelExp>
+										<AddExp>
+											<MulExp>
+												<UnaryExp>
+													<PrimaryExp>
+														<LVal>
+															i
+									<
 									<AddExp>
+										<AddExp>
+											<MulExp>
+												<UnaryExp>
+													<PrimaryExp>
+														<LVal>
+															n
+										+
 										<MulExp>
 											<UnaryExp>
-												<UnaryOp>
-													+
-												<UnaryExp>
-													<UnaryOp>
-														-
-													<UnaryExp>
-														<UnaryOp>
-															!
-														<UnaryExp>
-															<UnaryOp>
-																!
-															<UnaryExp>
-																<UnaryOp>
-																	!
-																<UnaryExp>
-																	<PrimaryExp>
-																		<LVal>
-																			a
+												<PrimaryExp>
+													<Number>
+														1
+				;
+				<ForStmt>
+					<LVal>
+						i
+					=
+					<Exp>
+						<AddExp>
+							<AddExp>
+								<MulExp>
+									<UnaryExp>
+										<PrimaryExp>
+											<LVal>
+												i
+							+
+							<MulExp>
+								<UnaryExp>
+									<PrimaryExp>
+										<Number>
+											1
 				)
 				<Stmt>
 					<Block>
 						{
 						<Stmt>
 							<LVal>
-								a
-							=
-							<Exp>
-								<AddExp>
-									<MulExp>
-										<UnaryExp>
-											<UnaryOp>
-												-
-											<UnaryExp>
-												<UnaryOp>
-													-
-												<UnaryExp>
-													<UnaryOp>
-														-
-													<UnaryExp>
-														<PrimaryExp>
-															<Number>
-																1
-							;
-						}
-				else
-				<Stmt>
-					<Block>
-						{
-						<Stmt>
-							<LVal>
-								a
+								temp
 							=
 							<Exp>
 								<AddExp>
 									<MulExp>
 										<UnaryExp>
 											<PrimaryExp>
-												<Number>
-													0
+												<LVal>
+													a2
 							;
+						<Stmt>
+							<LVal>
+								a2
+							=
+							<Exp>
+								<AddExp>
+									<AddExp>
+										<MulExp>
+											<UnaryExp>
+												<PrimaryExp>
+													<LVal>
+														a1
+									+
+									<MulExp>
+										<UnaryExp>
+											<PrimaryExp>
+												<LVal>
+													a2
+							;
+						<Stmt>
+							<LVal>
+								a1
+							=
+							<Exp>
+								<AddExp>
+									<MulExp>
+										<UnaryExp>
+											<PrimaryExp>
+												<LVal>
+													temp
+							;
+						<Stmt>
+							if
+							(
+							<Cond>
+								<LOrExp>
+									<LAndExp>
+										<EqExp>
+											<EqExp>
+												<RelExp>
+													<AddExp>
+														<MulExp>
+															<MulExp>
+																<UnaryExp>
+																	<PrimaryExp>
+																		<LVal>
+																			i
+															%
+															<UnaryExp>
+																<PrimaryExp>
+																	<Number>
+																		2
+											==
+											<RelExp>
+												<AddExp>
+													<MulExp>
+														<UnaryExp>
+															<PrimaryExp>
+																<Number>
+																	1
+							)
+							<Stmt>
+								<Block>
+									{
+									<Stmt>
+										continue
+										;
+									}
+						<Stmt>
+							printf
+							(
+							"round %d: %d\n"
+							,
+							<Exp>
+								<AddExp>
+									<MulExp>
+										<UnaryExp>
+											<PrimaryExp>
+												<LVal>
+													i
+							,
+							<Exp>
+								<AddExp>
+									<MulExp>
+										<UnaryExp>
+											<PrimaryExp>
+												<LVal>
+													a1
+							)
+							;
+						<Stmt>
+							if
+							(
+							<Cond>
+								<LOrExp>
+									<LAndExp>
+										<EqExp>
+											<RelExp>
+												<RelExp>
+													<AddExp>
+														<MulExp>
+															<UnaryExp>
+																<PrimaryExp>
+																	<LVal>
+																		i
+												>
+												<AddExp>
+													<MulExp>
+														<UnaryExp>
+															<PrimaryExp>
+																<Number>
+																	19
+							)
+							<Stmt>
+								<Block>
+									{
+									<Stmt>
+										break
+										;
+									}
 						}
-			<Stmt>
-				printf
-				(
-				"%d"
-				,
-				<Exp>
-					<AddExp>
-						<MulExp>
-							<UnaryExp>
-								<PrimaryExp>
-									<LVal>
-										a
-				)
-				;
 			<Stmt>
 				return
 				<Exp>

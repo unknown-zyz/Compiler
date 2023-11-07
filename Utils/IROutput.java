@@ -5,6 +5,7 @@ import LLVM.Value.Argument;
 import LLVM.Value.BasicBlock;
 import LLVM.Value.Function;
 import LLVM.Value.GlobalVar;
+import LLVM.Value.Instruction.BrInst;
 import LLVM.Value.Instruction.Instruction;
 
 import java.io.BufferedWriter;
@@ -69,9 +70,12 @@ public class IROutput {
     }
 
     private static void BasicBlockOutput(BasicBlock basicBlock) throws IOException {
+        boolean brFlag = false; // 第一条br之后的br指令不输出 因为if最后会br到nextBlock, break/continue会br到changeBlcok， 应以break的br为准（即第一条br
         out.write(basicBlock.getName()+":\n");
         for(Instruction inst:basicBlock.getInsts())
         {
+            if(brFlag) break;
+            if(inst instanceof BrInst)  brFlag = true;
             out.write("\t");
             InstOutput(inst);
         }
