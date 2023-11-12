@@ -17,7 +17,7 @@ public class IntType extends Type{
     }
 
     @Override
-    public boolean isInteger(){
+    public boolean isIntType(){
         return true;
     }
 }

@@ -10,4 +10,7 @@ public class ConstInteger extends Value{
         this.value = Integer.parseInt(value);
     }
 
+    public int getValue() {
+        return value;
+    }
 }

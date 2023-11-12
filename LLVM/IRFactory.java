@@ -2,16 +2,31 @@ package LLVM;
 
 import LLVM.Value.*;
 import LLVM.Value.Instruction.*;
-import LLVM.type.IntType;
-import LLVM.type.PointerType;
-import LLVM.type.Type;
-import LLVM.type.VoidType;
+import LLVM.type.*;
 
 import java.util.ArrayList;
 
 public class IRFactory {
     public GlobalVar buildGlobalVar(String name, Type type, Value value, boolean isConst) {
         return new GlobalVar("@"+name, type, value, isConst);
+    }
+
+    public ArrayType buildArrayType(ArrayList<Integer> sizes, Type type) {
+        if(sizes.size() == 1){
+            return new ArrayType(sizes.get(0), type);
+        }
+
+        ArrayList<Integer> newSizes = new ArrayList<>();
+        for(int i = 1; i < sizes.size(); i++){
+            newSizes.add(sizes.get(i));
+        }
+        Type newType = buildArrayType(newSizes, type);
+        return new ArrayType(sizes.get(0), newType);
+    }
+
+    public GlobalVar buildGlobalArray(String name, Type type, ArrayList<Integer> sizes, ArrayList<Value> values) {
+        ArrayType arrayType = buildArrayType(sizes, type);
+        return new GlobalVar("@"+name, new PointerType(arrayType), values);
     }
 
     public ConstInteger buildNumber(String val){
@@ -34,10 +49,17 @@ public class IRFactory {
     public Argument buildArgument(String name, String type, Function function) {
         Argument argument = switch (type) {
             case "int" -> new Argument(name, IntType.I32, function);
-//            case "int*" -> new Argument(name, new PointerType(IntType.I32), function);
-            case "void" -> new Argument(name, VoidType.voidType, function);
+            case "int*" -> new Argument(name, new PointerType(IntType.I32), function);
             default -> null;
         };
+        function.addArg(argument);
+        return argument;
+    }
+
+    public Argument buildArgument(String name, String type, Function function, ArrayList<Integer> indexs) {
+        assert type.equals("int");
+        ArrayType arrayType = buildArrayType(indexs, IntType.I32);
+        Argument argument = new Argument(name, new PointerType(arrayType), function);
         function.addArg(argument);
         return argument;
     }
@@ -64,8 +86,6 @@ public class IRFactory {
 
     public BinaryInst buildBinaryInst(Value left, Value right, Operator op, BasicBlock bb) {
         Type type = op.isBoolean() ? IntType.I1 : IntType.I32;
-        if(left.getType() == IntType.I1 || right.getType() == IntType.I1)
-            type = IntType.I1;
         BinaryInst binaryInst = new BinaryInst(op, left, right, type);
         bb.addInst(binaryInst);
         return binaryInst;
@@ -100,9 +120,19 @@ public class IRFactory {
         bb.addInst(brInst);
         return brInst;
     }
+
     public BrInst buildBrInst(Value value, BasicBlock trueBlock, BasicBlock falseBlock, BasicBlock bb) {
         BrInst brInst = new BrInst(value, trueBlock, falseBlock);
         bb.addInst(brInst);
         return brInst;
+    }
+
+    public GetPtrInst buildGetPtrInst(Value value, ArrayList<Value> indexs, BasicBlock bb) {
+        Type type = ((PointerType)value.getType()).getpType();
+        for(int i = 1; i < indexs.size();i++)
+            type = ((ArrayType)type).getElementType();
+        GetPtrInst getPtrInst = new GetPtrInst(value, indexs, new PointerType(type));
+        bb.addInst(getPtrInst);
+        return getPtrInst;
     }
 }

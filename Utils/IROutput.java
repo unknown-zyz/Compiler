@@ -7,6 +7,8 @@ import LLVM.Value.Function;
 import LLVM.Value.GlobalVar;
 import LLVM.Value.Instruction.BrInst;
 import LLVM.Value.Instruction.Instruction;
+import LLVM.Value.Instruction.RetInst;
+import LLVM.type.VoidType;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -17,13 +19,24 @@ public class IROutput {
     private static BufferedWriter out;
 
     private static void GlobalVarOutput(GlobalVar globalVar) throws IOException {
-        out.write(globalVar.getName());
-        out.write(" = ");
-        if(globalVar.isConst())
-            out.write("constant ");
-        else
-            out.write("global ");
-        out.write(globalVar.getValue().toString());
+//        if(globalVar.isArray()) {
+//            out.write(globalVar.getName());
+//            out.write(" = ");
+//            out.write("global ");
+//
+//        }
+//        else {
+//            out.write(globalVar.getName());
+//            out.write(" = ");
+//            if(globalVar.isConst())
+//                out.write("constant ");
+//            else
+//                out.write("global ");
+//            out.write(globalVar.getValue().toString());
+//        }
+
+        out.write(globalVar.toString());
+
     }
 
     private static void LibFuncOutput() throws IOException {
@@ -34,7 +47,7 @@ public class IROutput {
     }
     private static void FunctionOutput(Function function) throws IOException {
         out.write("define dso_local ");
-        if(function.getType().isInteger())
+        if(function.getType().isIntType())
             out.write("i32 ");
         else
             out.write("void ");
@@ -62,20 +75,18 @@ public class IROutput {
         {
             for(Instruction inst: bb.getInsts()) {
                 if (inst.hasValue())
-                {
                     inst.setName("%" + ++cnt);
-                }
             }
         }
     }
 
     private static void BasicBlockOutput(BasicBlock basicBlock) throws IOException {
-        boolean brFlag = false; // 第一条br之后的br指令不输出 因为if最后会br到nextBlock, break/continue会br到changeBlcok， 应以break的br为准（即第一条br
+        boolean flag = false; // 第一条br/ret之后的指令不输出 因为if最后会br到nextBlock, break/continue会br到changeBlcok， 应以break的br为准（即第一条br
         out.write(basicBlock.getName()+":\n");
         for(Instruction inst:basicBlock.getInsts())
         {
-            if(brFlag) break;
-            if(inst instanceof BrInst)  brFlag = true;
+            if(flag) break;
+            if(inst instanceof BrInst || inst instanceof RetInst)  flag = true;
             out.write("\t");
             InstOutput(inst);
         }

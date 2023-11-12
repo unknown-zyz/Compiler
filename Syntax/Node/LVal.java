@@ -9,10 +9,13 @@ public class LVal extends non_Terminal {
     {
         if(!queryGlobalSymbol(cur.getToken()))
             addError(ErrorType.c, cur.getLine());
-        addChild(new Ident(cur));
+        int dim = 0;
+        Ident ident = new Ident(cur);
+        addChild(ident);
         next();
         while (cur_equal("["))
         {
+            dim++;
             addChild(new Symbol(cur));
             next();
             add_analyse(new Exp());
@@ -24,5 +27,6 @@ public class LVal extends non_Terminal {
             else
                 addError(ErrorType.k);
         }
+        ident.setDim(dim);
     }
 }

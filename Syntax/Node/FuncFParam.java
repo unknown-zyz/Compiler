@@ -18,7 +18,8 @@ public class FuncFParam extends non_Terminal {
             if(isIdent(cur))
             {
                 String name = cur.getToken();
-                addChild(new Ident(cur));
+                Ident ident = new Ident(cur);
+                addChild(ident);
                 next();
                 if(cur_equal("[")) {
                     dimension++;
@@ -53,6 +54,7 @@ public class FuncFParam extends non_Terminal {
                     {
                         addSymbol(new ArraySymbol(name,false,dimension));
                         curFunc.addFuncParam(new FuncParam(name, dimension));
+                        ident.setDim(dimension);
                     }
                     else
                         addError(ErrorType.b);

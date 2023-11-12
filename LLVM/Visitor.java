@@ -3,10 +3,7 @@ package LLVM;
 import LLVM.Value.*;
 import LLVM.Value.Instruction.AllocInst;
 import LLVM.Value.Instruction.Operator;
-import LLVM.type.IntType;
-import LLVM.type.PointerType;
-import LLVM.type.Type;
-import LLVM.type.VoidType;
+import LLVM.type.*;
 import Lexical.TokenType;
 import Lexical.Word;
 import Syntax.Node.*;
@@ -99,7 +96,7 @@ public class Visitor {
         String i_name = ident.getWord().getToken();
         int i_dim = ident.getDim();
         if (i_dim > 0) {
-            visitArray();
+            visitArray(constDef, type, isGlobal);
         } else {
             if (isGlobal) {
                 visitConstInitVal(constDef.getChild(constDef.getChild().size() - 1, ConstInitVal.class), true);
@@ -145,7 +142,7 @@ public class Visitor {
         String i_name = ident.getWord().getToken();
         int i_dim = ident.getDim();
         if (i_dim > 0) {
-            visitArray();
+            visitArray(varDef, type, isGlobal);
         } else {
             if (isGlobal) {
                 if (varDef.getChild(varDef.getChild().size() - 1, InitVal.class) != null)
@@ -177,8 +174,172 @@ public class Visitor {
         }
     }
 
-    public void visitArray() {
+    public void visitArray(ConstDef constDef, Type type, boolean isGlobal) {
+        Ident ident = constDef.getChild(0, Ident.class);
+        ConstInitVal constInitVal = constDef.getChild(constDef.getChild().size() - 1, ConstInitVal.class);
+        String name = ident.getWord().getToken();
+        int dim = ident.getDim();
+        ArrayList<Integer> sizes = new ArrayList<>();
+        ArrayList<Value> values = new ArrayList<>();
+        sizes.add(visitGlobalAddExp(constDef.getChild(2, ConstExp.class).getChild(0, AddExp.class)));
+        if (dim == 2)
+            sizes.add(visitGlobalAddExp(constDef.getChild(5, ConstExp.class).getChild(0, AddExp.class)));
+        if (dim == 1) {
+            int cnt = 1, val = 0;
+            for (int i = 0; i < sizes.get(0); i++) {
+                if (cnt < constInitVal.getChild().size() - 1) {
+                    if(isGlobal)
+                        val = visitGlobalAddExp(constInitVal.getChild(cnt, ConstInitVal.class).getChild(0, ConstExp.class).getChild(0, AddExp.class));
+                    else
+                        visitConstExp(constInitVal.getChild(cnt, ConstInitVal.class).getChild(0, ConstExp.class), false);
+                    cnt += 2;
+                }
+                else {
+                    if(isGlobal)
+                        val = 0;
+                    else
+                        curValue = new Value("0",IntType.I32);
+                }
+                if(isGlobal)
+                    values.add(new Value(String.valueOf(val), IntType.I32));
+                else
+                    values.add(curValue);
+            }
+        } else {
+            int cnt1 = 1, cnt2, val = 0;
+            for (int i = 0; i < sizes.get(0); i++) {
+                cnt2 = 1;
+                for (int j = 0; j < sizes.get(1); j++) {
+                    if (cnt1 < constInitVal.getChild().size() - 1 && cnt2 < constInitVal.getChild(cnt1, ConstInitVal.class).getChild().size() - 1) {
+                        if(isGlobal)
+                            val = visitGlobalAddExp(constInitVal.getChild(cnt1, ConstInitVal.class).getChild(cnt2, ConstInitVal.class).getChild(0, ConstExp.class).getChild(0, AddExp.class));
+                        else
+                            visitConstExp(constInitVal.getChild(cnt1, ConstInitVal.class).getChild(cnt2, ConstInitVal.class).getChild(0, ConstExp.class), false);
+                        cnt2 += 2;
+                    }
+                    else {
+                        if(isGlobal)
+                            val = 0;
+                        else
+                            curValue = new Value("0", IntType.I32);
+                    }
+                    if(isGlobal)
+                        values.add(new Value(String.valueOf(val), IntType.I32));
+                    else
+                        values.add(curValue);
+                }
+                cnt1 += 2;
+            }
+        }
+        if (isGlobal) {
+            curValue = f.buildGlobalArray(name, type, sizes, values);
+            globalVars.add((GlobalVar) curValue);
+        } else {
+            ArrayType arrayType = f.buildArrayType(sizes, type);
+            curValue = f.buildAllocInst(new PointerType(arrayType), curBB);
+            Value tmpValue = curValue;
+            ArrayList<Value> indexs = new ArrayList<>();
+            for (int i = 0; i < dim; i++)
+                indexs.add(new Value("0", IntType.I32));
+            for (int i = 0; i < values.size(); i++) {
+                indexs.add(new Value(String.valueOf(i), IntType.I32));
+                curValue = f.buildGetPtrInst(tmpValue, indexs, curBB);
+                f.buildStoreInst(values.get(i), curValue, curBB);
+                indexs.remove(indexs.size() - 1);
+            }
+            curValue = tmpValue;
+        }
+        pushSymbol(name, curValue);
+    }
 
+    public void visitArray(VarDef varDef, Type type, boolean isGlobal) {
+        Ident ident = varDef.getChild(0, Ident.class);
+        InitVal initVal = varDef.getChild(varDef.getChild().size() - 1, InitVal.class);
+        String name = ident.getWord().getToken();
+        int dim = ident.getDim();
+        ArrayList<Integer> sizes = new ArrayList<>();
+        ArrayList<Value> values = new ArrayList<>();
+        sizes.add(visitGlobalAddExp(varDef.getChild(2, ConstExp.class).getChild(0, AddExp.class)));
+        if (dim == 2)
+            sizes.add(visitGlobalAddExp(varDef.getChild(5, ConstExp.class).getChild(0, AddExp.class)));
+        if (initVal != null) {
+            if (dim == 1) {
+                int cnt = 1, val = 0;
+                for (int i = 0; i < sizes.get(0); i++) {
+                    if (cnt < initVal.getChild().size() - 1) {
+                        if(isGlobal)
+                            val = visitGlobalAddExp(initVal.getChild(cnt, InitVal.class).getChild(0, Exp.class).getChild(0, AddExp.class));
+                        else
+                            visitExp(initVal.getChild(cnt, InitVal.class).getChild(0, Exp.class), false);
+                        cnt += 2;
+                    }
+                    else {
+                        if(isGlobal)
+                            val = 0;
+                        else
+                            curValue = new Value("0",IntType.I32);
+                    }
+                    if(isGlobal)
+                        values.add(new Value(String.valueOf(val), IntType.I32));
+                    else
+                        values.add(curValue);
+                }
+            } else {
+                int cnt1 = 1, cnt2, val = 0;
+                for (int i = 0; i < sizes.get(0); i++) {
+                    cnt2 = 1;
+                    for (int j = 0; j < sizes.get(1); j++) {
+                        if (cnt1 < initVal.getChild().size() - 1 && cnt2 < initVal.getChild(cnt1, InitVal.class).getChild().size() - 1) {
+                            if(isGlobal)
+                                val = visitGlobalAddExp(initVal.getChild(cnt1, InitVal.class).getChild(cnt2, InitVal.class).getChild(0, Exp.class).getChild(0, AddExp.class));
+                            else
+                                visitExp(initVal.getChild(cnt1, InitVal.class).getChild(cnt2, InitVal.class).getChild(0, Exp.class), false);
+                            cnt2 += 2;
+                        }
+                        else {
+                            if(isGlobal)
+                                val = 0;
+                            else
+                                curValue = new Value("0",IntType.I32);
+                        }
+                        if(isGlobal)
+                            values.add(new Value(String.valueOf(val), IntType.I32));
+                        else
+                            values.add(curValue);
+                    }
+                    cnt1 += 2;
+                }
+            }
+        } else {
+            if (dim == 1) {
+                for (int i = 0; i < sizes.get(0); i++)
+                    values.add(new Value(String.valueOf(0), type));
+            } else {
+                for (int i = 0; i < sizes.get(0) * sizes.get(1); i++)
+                    values.add(new Value(String.valueOf(0), type));
+            }
+        }
+        if (isGlobal) {
+            curValue = f.buildGlobalArray(name, type, sizes, values);
+            globalVars.add((GlobalVar) curValue);
+        } else {
+            ArrayType arrayType = f.buildArrayType(sizes, type);
+            curValue = f.buildAllocInst(new PointerType(arrayType), curBB);
+            if (initVal != null) {
+                Value tmpValue = curValue;
+                ArrayList<Value> indexs = new ArrayList<>();
+                for (int i = 0; i < dim; i++)
+                    indexs.add(new Value("0", IntType.I32));
+                for (int i = 0; i < values.size(); i++) {
+                    indexs.add(new Value(String.valueOf(i), IntType.I32));
+                    curValue = f.buildGetPtrInst(tmpValue, indexs, curBB);
+                    f.buildStoreInst(values.get(i), curValue, curBB);
+                    indexs.remove(indexs.size() - 1);
+                }
+                curValue = tmpValue;
+            }
+        }
+        pushSymbol(name, curValue);
     }
 
     public void visitFuncDef(FuncDef funcDef) {
@@ -202,7 +363,6 @@ public class Visitor {
         curFunction = f.buildFunction(type, name, module);
         pushSymbol(name, curFunction);
         curBB = f.buildBasicBlock(curFunction);
-//        curValue = new Value("0", IntType.I32);           //???
         pushSymbolTable();
         visitBlock(mainFuncDef.getChild(4, Block.class));
         popSymbolTable();
@@ -218,14 +378,20 @@ public class Visitor {
         //  FuncFParam → BType Ident [ '[' ']' { '[' ConstExp ']' } ]
         String type = funcFParam.getChild(0);
         String name = funcFParam.getChild(1);
+        Argument argument;
         if (funcFParam.getChild().size() == 2) {
-            Argument argument = f.buildArgument(name, type, curFunction);
-            AllocInst allocInst = f.buildAllocInst(new PointerType(argument.getType()), curBB);
-            f.buildStoreInst(argument, allocInst, curBB);
-            pushSymbol(name, allocInst);
+            argument = f.buildArgument(name, type, curFunction);
+        } else if (funcFParam.getChild().size() == 4) {
+            argument = f.buildArgument(name, type + "*", curFunction);
         } else {
-            visitArray();
+            ArrayList<Integer> indexs = new ArrayList<>();
+            for (int i = 5; i < funcFParam.getChild().size(); i += 3)
+                indexs.add(visitGlobalAddExp(funcFParam.getChild(i, ConstExp.class).getChild(0, AddExp.class)));
+            argument = f.buildArgument(name, type, curFunction, indexs);
         }
+        AllocInst allocInst = f.buildAllocInst(new PointerType(argument.getType()), curBB);
+        f.buildStoreInst(argument, allocInst, curBB);
+        pushSymbol(name, allocInst);
     }
 
     public void visitBlock(Block block) {
@@ -261,9 +427,7 @@ public class Visitor {
             popSymbolTable();
         } else {
             String str = stmt.getChild(0);
-            if (str.equals(";")) {
-
-            } else if (str.equals("if")) {
+            if (str.equals("if")) {
                 BasicBlock trueBlock = f.buildBasicBlock(curFunction);
                 BasicBlock nextBlock = f.buildBasicBlock(curFunction);
                 BasicBlock falseBlock = null;
@@ -287,16 +451,13 @@ public class Visitor {
                 Cond cond = null;
                 int flag = 0;   //记录;数量来判断位置
                 for (int i = 2; i < stmt.getChild().size() - 2; i++) {
-                    if(stmt.getChild(i) != null && stmt.getChild(i).equals(";")) {
+                    if (stmt.getChild(i) != null && stmt.getChild(i).equals(";")) {
                         flag++;
-                    }
-                    else if(stmt.getChild(i, ForStmt.class)!=null && flag == 0) {
+                    } else if (stmt.getChild(i, ForStmt.class) != null && flag == 0) {
                         forStmt1 = stmt.getChild(i, ForStmt.class);
-                    }
-                    else if(stmt.getChild(i, Cond.class)!=null && flag == 1) {
+                    } else if (stmt.getChild(i, Cond.class) != null && flag == 1) {
                         cond = stmt.getChild(i, Cond.class);
-                    }
-                    else if(stmt.getChild(i, ForStmt.class)!=null && flag == 2) {
+                    } else if (stmt.getChild(i, ForStmt.class) != null && flag == 2) {
                         forStmt2 = stmt.getChild(i, ForStmt.class);
                     }
                 }
@@ -306,10 +467,10 @@ public class Visitor {
                 BasicBlock changeBlock = f.buildBasicBlock(curFunction);
                 forBB = changeBlock;
                 forNextBB = nextBlock;
-                if(forStmt1 != null)  visitForStmt(forStmt1);
+                if (forStmt1 != null) visitForStmt(forStmt1);
                 f.buildBrInst(condBlock, curBB);
                 curBB = condBlock;
-                if(cond == null) {
+                if (cond == null) {
                     IntConst intConst = new IntConst(new Word("1", TokenType.INTCON, 0));
                     Number number = new Number();
                     PrimaryExp primaryExp = new PrimaryExp();
@@ -337,7 +498,7 @@ public class Visitor {
                 visitStmt(stmt.getChild(stmt.getChild().size() - 1, Stmt.class));
                 f.buildBrInst(changeBlock, curBB);
                 curBB = changeBlock;
-                if(forStmt2 != null)  visitForStmt(forStmt2);
+                if (forStmt2 != null) visitForStmt(forStmt2);
                 f.buildBrInst(condBlock, curBB);
                 curBB = nextBlock;
             } else if (str.equals("break")) {
@@ -390,7 +551,6 @@ public class Visitor {
     public void visitConstExp(ConstExp constExp, boolean isGlobal) {
         if (isGlobal) {
             GlobalInt = visitGlobalAddExp(constExp.getChild(0, AddExp.class));
-//            getExpValue(constExp.getChild(0, AddExp.class));
         } else
             visitAddExp(constExp.getChild(0, AddExp.class));
     }
@@ -410,12 +570,93 @@ public class Visitor {
     public void visitLVal(LVal lVal, boolean isAssign) {
         // LVal → Ident {'[' Exp ']'}
         Ident ident = lVal.getChild(0, Ident.class);
+        int dim = 0;
+        Value exp1 = null, exp2 = null;
+        if (lVal.getChild().size() == 4) {
+            dim = 1;
+//            exp1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
+            visitExp(lVal.getChild(2, Exp.class), false);
+            exp1 = curValue;
+        } else if (lVal.getChild().size() == 7) {
+            dim = 2;
+            visitExp(lVal.getChild(2, Exp.class), false);
+            exp1 = curValue;
+            visitExp(lVal.getChild(5, Exp.class), false);
+            exp2 = curValue;
+        }
         curValue = querySymbol(ident.getWord().getToken());
         assert curValue != null;
-        if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
-        //Array   Const?
 
-
+        Type type = curValue.getType();
+        assert type instanceof PointerType;
+        ArrayList<Value> indexs = new ArrayList<>();
+        if (((PointerType) type).getpType() instanceof ArrayType arrayType) {
+            if (arrayType.getElementType() instanceof ArrayType) //二维
+            {
+                if (dim == 2) {
+                    indexs.add(new Value("0", IntType.I32));
+                    indexs.add(exp1);
+                    indexs.add(exp2);
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
+                } else if (dim == 1) {
+                    indexs.add(new Value("0", IntType.I32));
+                    indexs.add(exp1);
+                    indexs.add(new Value("0", IntType.I32));
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                } else {
+                    indexs.add(new Value("0", IntType.I32));
+                    indexs.add(new Value("0", IntType.I32));
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                }
+            }
+            else    //一维
+            {
+                if (dim == 1) {
+                    indexs.add(new Value("0", IntType.I32));
+                    indexs.add(exp1);
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
+                } else {
+                    indexs.add(new Value("0", IntType.I32));
+                    indexs.add(new Value("0", IntType.I32));
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                }
+            }
+        }
+        else if (((PointerType) type).getpType() instanceof PointerType pointerType) {
+            curValue = f.buildLoadInst(curValue, curBB);
+            if (pointerType.getpType() instanceof ArrayType) //二维
+            {
+                if (dim == 2) {
+                    indexs.add(exp1);
+                    indexs.add(exp2);
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
+                } else if (dim == 1) {
+                    indexs.add(exp1);
+                    indexs.add(new Value("0", IntType.I32));
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                } else {
+                    indexs.add(new Value("0", IntType.I32));
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                }
+            }
+            else    //一维
+            {
+                if (dim == 1) {
+                    indexs.add(exp1);
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
+                } else {
+                    indexs.add(new Value("0", IntType.I32));
+                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                }
+            }
+        }
+        else {
+            if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
+        }
     }
 
     public void visitPrimaryExp(PrimaryExp primaryExp) {
@@ -512,11 +753,25 @@ public class Visitor {
             for (int i = 2; i < relExp.getChild().size() - 2; i += 2) {
                 Value tmpValue = curValue;
                 visitRelExp(relExp.getChild(i, RelExp.class));
+                if(tmpValue.getType() != curValue.getType())
+                {
+                    if(tmpValue.getType() == IntType.I1)
+                        tmpValue = f.buildBinaryInst(tmpValue, new Value("", IntType.I32), Operator.Zext, curBB);
+                    else
+                        curValue = f.buildBinaryInst(curValue, new Value("", IntType.I32), Operator.Zext, curBB);
+                }
                 Operator op = Operator.str2op(relExp.getChild(i - 1));
                 curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
             }
             Value tmpValue = curValue;
             visitAddExp(relExp.getChild(relExp.getChild().size() - 1, AddExp.class));
+            if(tmpValue.getType() != curValue.getType())
+            {
+                if(tmpValue.getType() == IntType.I1)
+                    tmpValue = f.buildBinaryInst(tmpValue, new Value("", IntType.I32), Operator.Zext, curBB);
+                else
+                    curValue = f.buildBinaryInst(curValue, new Value("", IntType.I32), Operator.Zext, curBB);
+            }
             Operator op = Operator.str2op(relExp.getChild(relExp.getChild().size() - 2));
             curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
         }
@@ -531,11 +786,25 @@ public class Visitor {
             for (int i = 2; i < eqExp.getChild().size() - 2; i += 2) {
                 Value tmpValue = curValue;
                 visitEqExp(eqExp.getChild(i, EqExp.class));
+                if(tmpValue.getType() != curValue.getType())
+                {
+                    if(tmpValue.getType() == IntType.I1)
+                        tmpValue = f.buildBinaryInst(tmpValue, new Value("", IntType.I32), Operator.Zext, curBB);
+                    else
+                        curValue = f.buildBinaryInst(curValue, new Value("", IntType.I32), Operator.Zext, curBB);
+                }
                 Operator op = Operator.str2op(eqExp.getChild(i - 1));
                 curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
             }
             Value tmpValue = curValue;
             visitRelExp(eqExp.getChild(eqExp.getChild().size() - 1, RelExp.class));
+            if(tmpValue.getType() != curValue.getType())
+            {
+                if(tmpValue.getType() == IntType.I1)
+                    tmpValue = f.buildBinaryInst(tmpValue, new Value("", IntType.I32), Operator.Zext, curBB);
+                else
+                    curValue = f.buildBinaryInst(curValue, new Value("", IntType.I32), Operator.Zext, curBB);
+            }
             Operator op = Operator.str2op(eqExp.getChild(eqExp.getChild().size() - 2));
             curValue = f.buildBinaryInst(tmpValue, curValue, op, curBB);
         }
@@ -569,8 +838,6 @@ public class Visitor {
             }
             visitLAndExp(lOrExp.getChild(lOrExp.getChild().size() - 1, LAndExp.class), trueBlock, falseBlock);
         }
-//        curValue = f.buildBinaryInst(curValue, f.buildNumber("0"), Operator.Ne, curBB);
-//        f.buildBrInst(curValue, trueBlock, falseBlock, curBB);
     }
 
     public void initLibFunc() {
@@ -637,22 +904,44 @@ public class Visitor {
             } else {
                 return -visitGlobalUnaryExp(unaryExp.getChild(1, UnaryExp.class));
             }
-        } else
+        }
+        else
             return visitGlobalPrimaryExp(unaryExp.getChild(0, PrimaryExp.class));
     }
 
     public int visitGlobalPrimaryExp(PrimaryExp primaryExp) {
         if (primaryExp.getChild(0, Terminal.class) != null) {
             return visitGlobalAddExp(primaryExp.getChild(1, Exp.class).getChild(0, AddExp.class));
-        } else if (primaryExp.getChild(0, LVal.class) != null) {
-            String name = primaryExp.getChild(0, LVal.class).getChild(0);
+        }
+        else if (primaryExp.getChild(0, LVal.class) != null) {
+            LVal lVal = primaryExp.getChild(0, LVal.class);
+            int len = lVal.getChild().size();
+            String name = lVal.getChild(0);
             for (GlobalVar globalVar : globalVars) {
                 if (globalVar.getName().equals("@" + name))
-                    return Integer.parseInt(globalVar.getValue().getName());
+                {
+                    if(len == 1)
+                    {
+                        return Integer.parseInt(globalVar.getValue().getName());
+                    }
+                    else if(len == 4)
+                    {
+                        int index1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
+                        return Integer.parseInt(globalVar.getValues().get(index1).getName());
+                    }
+                    else {
+                        int index1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
+                        int index2 = visitGlobalAddExp(lVal.getChild(5, Exp.class).getChild(0, AddExp.class));
+                        Type type = ((PointerType)globalVar.getType()).getpType();
+                        int size = ((ArrayType)((ArrayType)type).getElementType()).getSize();
+                        return Integer.parseInt(globalVar.getValues().get(index1*size + index2).getName());
+                    }
+                }
             }
             System.out.println("Error: " + name + " not found!");
             return 0;
-        } else {
+        }
+        else {
             return Integer.parseInt(primaryExp.getChild(0, Number.class).getChild(0));
         }
     }

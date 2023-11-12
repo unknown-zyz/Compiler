@@ -1,8 +1,8 @@
 package Error;
 
 public class Error {
-    private ErrorType errorType;
-    private int line;
+    private final ErrorType errorType;
+    private final int line;
 
     public Error(ErrorType errorType, int line) {
         this.errorType = errorType;
@@ -14,11 +14,4 @@ public class Error {
         return line + " " + errorType;
     }
 
-    public ErrorType getErrorType() {
-        return errorType;
-    }
-
-    public int getLine() {
-        return line;
-    }
 }

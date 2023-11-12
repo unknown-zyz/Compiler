@@ -15,11 +15,9 @@ public class BinaryInst extends Instruction{
     public String toString() {
         Value left = getOperand(0);
         Value right = getOperand(1);
-        Type type;
-        if(left.getType() == IntType.I32 && right.getType() == IntType.I32)
-            type = IntType.I32;
-        else
-            type = IntType.I1;
-        return getName() + " = " + getOp() + " " + type + " " + left.getName() + ", " + right.getName();
+        assert left.getType() == right.getType();
+        if(getOp() == Operator.Zext)
+            return getName() + " = " + getOp() + " " + left.getType() + " " + left.getName() + " to " + right.getType();
+        return getName() + " = " + getOp() + " " + left.getType() + " " + left.getName() + ", " + right.getName();
     }
 }

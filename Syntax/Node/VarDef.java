@@ -11,7 +11,8 @@ public class VarDef extends non_Terminal {
         {
             int dimension = 0;
             String name = cur.getToken();
-            addChild(new Ident(cur));
+            Ident ident = new Ident(cur);
+            addChild(ident);
             next();
             while(cur_equal("["))
             {
@@ -28,7 +29,10 @@ public class VarDef extends non_Terminal {
                     addError(ErrorType.k);
             }
             if(!queryCurSymbol(name))
+            {
                 addSymbol(new ArraySymbol(name,false,dimension));
+                ident.setDim(dimension);
+            }
             else
                 addError(ErrorType.b);
             if(cur_equal("="))

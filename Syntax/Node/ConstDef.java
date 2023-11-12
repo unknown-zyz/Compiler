@@ -10,7 +10,8 @@ public class ConstDef extends non_Terminal {
         {
             int dimension = 0;
             String name = cur.getToken();
-            addChild(new Ident(cur));
+            Ident ident = new Ident(cur);
+            addChild(ident);
             next();
             while(cur_equal("["))
             {
@@ -26,8 +27,10 @@ public class ConstDef extends non_Terminal {
                 else
                     addError(ErrorType.k);
             }
-            if(!queryCurSymbol(name))
+            if(!queryCurSymbol(name)) {
                 addSymbol(new ArraySymbol(name,true,dimension));
+                ident.setDim(dimension);
+            }
             else
                 addError(ErrorType.b);
             if(cur_equal("="))

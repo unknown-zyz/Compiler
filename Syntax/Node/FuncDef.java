@@ -2,6 +2,8 @@ package Syntax.Node;
 
 import static Syntax.SyntaxMain.*;
 import Error.ErrorType;
+import Lexical.TokenType;
+import Lexical.Word;
 import Symbols.FuncSymbol;
 import Symbols.Functype;
 import Symbols.SymbolTable;
@@ -47,7 +49,17 @@ public class FuncDef extends non_Terminal {
                     }
                     else
                         addError(ErrorType.j);
-                    add_analyse(new Block());
+                    Block block = new Block();
+                    add_analyse(block);
+                    //在void函数结尾添加 return;
+                    Reserved reserved = new Reserved(new Word("return", TokenType.RETURNTK, 0));
+                    Symbol symbol = new Symbol(new Word(";", TokenType.SEMICN, 0));
+                    Stmt stmt = new Stmt();
+                    stmt.addChild(reserved);
+                    stmt.addChild(symbol);
+                    ASTNode node = block.removeChild(); // 取出'}'
+                    block.addChild(stmt);
+                    block.addChild(node);
                     if(needReturn && !isFuncReturn)
                         addError(ErrorType.g);
                     needReturn = false;
