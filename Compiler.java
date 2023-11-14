@@ -1,16 +1,16 @@
-import LLVM.IRModule;
-import LLVM.Visitor;
-import Lexical.Lexer;
-import Lexical.Word;
-import Syntax.Node.CompUnit;
-import Syntax.SyntaxMain;
-import Utils.IROutput;
+import Midend.LLVM.IRModule;
+import Midend.LLVM.Visitor;
+import Frontend.Lexical.Lexer;
+import Frontend.Lexical.Word;
+import Frontend.Syntax.Node.CompUnit;
+import Frontend.Syntax.SyntaxMain;
+import Midend.LLVM.IROutput;
 
 import java.io.*;
 import java.util.ArrayList;
 
 import static Config.Config.*;
-import static Syntax.SyntaxMain.*;
+import static Frontend.Syntax.SyntaxMain.*;
 
 
 public class Compiler {
@@ -37,12 +37,12 @@ public class Compiler {
 
             PrintStream originalOut = System.out;
 
-            FileOutputStream AST_fileOut = new FileOutputStream("AST.txt");
-            PrintStream AST_printOut = new PrintStream(AST_fileOut);
-            System.setOut(AST_printOut);
-            syntaxMain.printAST();
-            AST_printOut.close();
-            AST_fileOut.close();
+//            FileOutputStream AST_fileOut = new FileOutputStream("AST.txt");
+//            PrintStream AST_printOut = new PrintStream(AST_fileOut);
+//            System.setOut(AST_printOut);
+//            syntaxMain.printAST();
+//            AST_printOut.close();
+//            AST_fileOut.close();
 //
 //            printSymbolTable();
             if(isErrorEmpty())
