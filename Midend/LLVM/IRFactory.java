@@ -7,6 +7,12 @@ import Midend.LLVM.Type.*;
 import java.util.ArrayList;
 
 public class IRFactory {
+    private static final IRFactory f = new IRFactory();
+
+    public static IRFactory getInstance() {
+        return f;
+    }
+
     public GlobalVar buildGlobalVar(String name, Type type, Value value, boolean isConst) {
         return new GlobalVar("@"+name, type, value, isConst);
     }
@@ -134,5 +140,12 @@ public class IRFactory {
         GetPtrInst getPtrInst = new GetPtrInst(value, indexs, new PointerType(type));
         bb.addInst(getPtrInst);
         return getPtrInst;
+    }
+
+    public PhiInst buildPhiInst(BasicBlock bb, Type type, ArrayList<Value> values) {
+        PhiInst phiInst = new PhiInst(type, values);
+        bb.addInstToHead(phiInst);
+        phiInst.setParentBB(bb);
+        return phiInst;
     }
 }

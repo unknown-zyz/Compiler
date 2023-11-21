@@ -17,24 +17,7 @@ public class IROutput {
     private static BufferedWriter out;
 
     private static void GlobalVarOutput(GlobalVar globalVar) throws IOException {
-//        if(globalVar.isArray()) {
-//            out.write(globalVar.getName());
-//            out.write(" = ");
-//            out.write("global ");
-//
-//        }
-//        else {
-//            out.write(globalVar.getName());
-//            out.write(" = ");
-//            if(globalVar.isConst())
-//                out.write("constant ");
-//            else
-//                out.write("global ");
-//            out.write(globalVar.getValue().toString());
-//        }
-
         out.write(globalVar.toString());
-
     }
 
     private static void LibFuncOutput() throws IOException {
@@ -58,7 +41,7 @@ public class IROutput {
                 out.write(", ");
         }
         out.write("){\n");
-        for(BasicBlock bb:function.getBasicBlock())
+        for(BasicBlock bb:function.getBasicBlocks())
             BasicBlockOutput(bb);
         out.write("}\n");
     }
@@ -69,10 +52,10 @@ public class IROutput {
         for(Argument arg : args){
             arg.setName("%" + ++cnt);
         }
-        for(BasicBlock bb:function.getBasicBlock())
+        for(BasicBlock bb:function.getBasicBlocks())
         {
             for(Instruction inst: bb.getInsts()) {
-                if (inst.hasValue())
+                if (inst.hasValue() && !inst.isDeleted())
                     inst.setName("%" + ++cnt);
             }
         }
@@ -83,10 +66,12 @@ public class IROutput {
         out.write(basicBlock.getName()+":\n");
         for(Instruction inst:basicBlock.getInsts())
         {
-            if(flag) break;
-            if(inst instanceof BrInst || inst instanceof RetInst)  flag = true;
-            out.write("\t");
-            InstOutput(inst);
+            if(!inst.isDeleted()) {
+                if (flag) break;
+                if (inst instanceof BrInst || inst instanceof RetInst) flag = true;
+                out.write("\t");
+                InstOutput(inst);
+            }
         }
     }
 

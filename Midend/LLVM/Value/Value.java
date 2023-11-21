@@ -38,4 +38,28 @@ public class Value {
     public String toString(){
         return this.type + " " + this.name;
     }
+
+    public void removeOneUse(User user){
+        int index = -1;
+        for(int i = 0; i < useList.size(); i++){
+            if(useList.get(i).getUser().equals(user)){
+                index = i;
+                break;
+            }
+        }
+        useList.remove(index);
+    }
+
+    public void removeAllUse() {
+        useList.clear();
+    }
+
+    public void replace(Value value) {
+        for (Use use : useList) {
+            User user = use.getUser();
+            int index = user.getOperands().indexOf(this);
+            user.setOperand(index, value);
+        }
+        removeAllUse();
+    }
 }

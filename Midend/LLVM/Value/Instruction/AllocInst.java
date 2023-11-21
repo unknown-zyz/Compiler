@@ -10,6 +10,10 @@ public class AllocInst extends Instruction{
         super("%" + (++Value.valCnt), type, Operator.Alloca);
     }
 
+    public Type getAllocType() {
+        return ((PointerType)getType()).getpType();
+    }
+
     @Override
     public String toString() {
         return getName() + " = " + "alloca " + ((PointerType)getType()).getpType();

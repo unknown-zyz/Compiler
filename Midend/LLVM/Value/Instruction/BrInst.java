@@ -5,7 +5,7 @@ import Midend.LLVM.Value.Value;
 import Midend.LLVM.Type.VoidType;
 
 public class BrInst extends Instruction{
-    private int type;
+    private final int type;
     private BasicBlock trueBlock;
     private BasicBlock falseBlock;
     private BasicBlock jumpBlock;
@@ -22,6 +22,22 @@ public class BrInst extends Instruction{
         this.trueBlock = trueBlock;
         this.falseBlock = falseBlock;
         this.type = 2;
+    }
+
+    public Boolean isJump() {
+        return type == 1;
+    }
+
+    public BasicBlock getTrueBlock() {
+        return trueBlock;
+    }
+
+    public BasicBlock getFalseBlock() {
+        return falseBlock;
+    }
+
+    public BasicBlock getJumpBlock() {
+        return jumpBlock;
     }
 
     public Value getBooleanVal(){

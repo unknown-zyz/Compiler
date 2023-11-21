@@ -18,7 +18,7 @@ public class Visitor {
     private BasicBlock curBB;
     private Value curValue;
     private final ArrayList<HashMap<String, Value>> symbolTables = new ArrayList<>();
-    private final IRFactory f = new IRFactory();
+    private final IRFactory f = IRFactory.getInstance();
     private int GlobalInt = 0;
     private BasicBlock forBB;
     private BasicBlock forNextBB;
