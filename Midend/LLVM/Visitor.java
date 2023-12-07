@@ -51,6 +51,15 @@ public class Visitor {
         };
     }
 
+    public void printSymbolTable() {
+        for (HashMap<String, Value> symbolTable : symbolTables) {
+            symbolTable.forEach((key, value) -> {
+                System.out.print(key + " " + value);
+                System.out.println(" "+value.getVal());
+            });
+        }
+    }
+
     //库函数
     private final Function func_getint = new Function("getint", IntType.I32);
     private final Function func_putint = new Function("putint", VoidType.voidType);
@@ -74,13 +83,7 @@ public class Visitor {
             else
                 visitMainFuncDef((MainFuncDef) node);
         }
-
-//        for (HashMap<String, Value> symbolTable : symbolTables) {
-//            symbolTable.forEach((key, value) -> {
-//                System.out.println(key + " " + value);
-//            });
-//        }
-
+        //printSymbolTable();
         return module;
     }
 
@@ -109,6 +112,9 @@ public class Visitor {
                     visitConstInitVal(constDef.getChild(constDef.getChild().size() - 1, ConstInitVal.class), false);
                     f.buildStoreInst(curValue, tmpValue, curBB);
                     curValue = tmpValue;
+                    //bug?
+                    visitConstInitVal(constDef.getChild(constDef.getChild().size() - 1, ConstInitVal.class), true);
+                    curValue.setVal(GlobalInt);
                 }
             }
             pushSymbol(i_name, curValue);
@@ -510,11 +516,14 @@ public class Visitor {
                     } else f.buildRetInst(curBB);
                 }
                 case "printf" -> {
+                    StringBuilder sb = new StringBuilder();
                     String formatStr = stmt.getChild(2);
                     int cnt = 2;
                     for (int i = 1; i < formatStr.length() - 1; i++) {
                         if (formatStr.charAt(i) == '%') {
                             if (formatStr.charAt(i + 1) == 'd') {
+                                module.getStringList().add(sb.toString());
+                                sb.delete(0, sb.length());
                                 visitExp(stmt.getChild(2 + cnt, Exp.class), false);
                                 cnt += 2;
                                 f.buildCallInst(func_putint, new ArrayList<>() {{
@@ -522,20 +531,27 @@ public class Visitor {
                                 }}, curBB);
                                 i++;
                             }
+                            else {
+                                sb.append(formatStr.charAt(i));
+                            }
                         } else if (formatStr.charAt(i) == '\\') {
+                            sb.append(formatStr.charAt(i));
                             if (formatStr.charAt(i + 1) == 'n') {
+                                sb.append(formatStr.charAt(i+1));
                                 f.buildCallInst(func_putch, new ArrayList<>() {{
                                     add(f.buildNumber("10"));
                                 }}, curBB);
                                 i++;
                             }
                         } else {
+                            sb.append(formatStr.charAt(i));
                             int finalI = i;
                             f.buildCallInst(func_putch, new ArrayList<>() {{
                                 add(new Value(String.valueOf((int) formatStr.charAt(finalI)), IntType.I32));
                             }}, curBB);
                         }
                     }
+                    module.getStringList().add(sb.toString());
                 }
             }
         }
@@ -551,13 +567,18 @@ public class Visitor {
     public void visitConstExp(ConstExp constExp, boolean isGlobal) {
         if (isGlobal) {
             GlobalInt = visitGlobalAddExp(constExp.getChild(0, AddExp.class));
-        } else
+        }
+        else if(canExpressionBeSimplified(constExp))
+            curValue = f.buildNumber(String.valueOf(visitGlobalAddExp(constExp.getChild(0, AddExp.class))));
+        else
             visitAddExp(constExp.getChild(0, AddExp.class));
     }
 
     public void visitExp(Exp exp, boolean isGlobal) {
         if (isGlobal)
             GlobalInt = visitGlobalAddExp(exp.getChild(0, AddExp.class));
+        else if(canExpressionBeSimplified(exp))
+            curValue = f.buildNumber(String.valueOf(visitGlobalAddExp(exp.getChild(0, AddExp.class))));
         else
             visitAddExp(exp.getChild(0, AddExp.class));
     }
@@ -907,21 +928,27 @@ public class Visitor {
             LVal lVal = primaryExp.getChild(0, LVal.class);
             int len = lVal.getChild().size();
             String name = lVal.getChild(0);
-            for (GlobalVar globalVar : module.getGlobalVars()) {
-                if (globalVar.getName().equals("@" + name)) {
-                    if (len == 1) {
-                        return Integer.parseInt(globalVar.getValue().getName());
-                    } else if (len == 4) {
-                        int index1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
-                        return Integer.parseInt(globalVar.getValues().get(index1).getName());
-                    } else {
-                        int index1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
-                        int index2 = visitGlobalAddExp(lVal.getChild(5, Exp.class).getChild(0, AddExp.class));
-                        Type type = ((PointerType) globalVar.getType()).getpType();
-                        int size = ((ArrayType) ((ArrayType) type).getElementType()).getSize();
-                        return Integer.parseInt(globalVar.getValues().get(index1 * size + index2).getName());
-                    }
+            Value value = querySymbol(name);
+            if(value instanceof GlobalVar globalVar) {
+                if(len == 1)
+                {
+                    return Integer.parseInt(globalVar.getValue().getName());
                 }
+                else if(len == 4)
+                {
+                    int index1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
+                    return Integer.parseInt(globalVar.getValues().get(index1).getName());
+                }
+                else {
+                    int index1 = visitGlobalAddExp(lVal.getChild(2, Exp.class).getChild(0, AddExp.class));
+                    int index2 = visitGlobalAddExp(lVal.getChild(5, Exp.class).getChild(0, AddExp.class));
+                    Type type = ((PointerType)globalVar.getType()).getpType();
+                    int size = ((ArrayType)((ArrayType)type).getElementType()).getSize();
+                    return Integer.parseInt(globalVar.getValues().get(index1*size + index2).getName());
+                }
+            } else if (value!=null)
+            {
+                return value.getVal();
             }
             System.out.println("Frontend.Semantic.Error: " + name + " not found!");
             return 0;
@@ -939,5 +966,20 @@ public class Visitor {
             case Mod -> x % y;
             default -> 0;
         };
+    }
+
+    public boolean canExpressionBeSimplified(non_Terminal nonTerminal) {
+        for(ASTNode node: nonTerminal.getChild()) {
+            if(node instanceof Terminal) {
+                String token = ((Terminal)node).getWord().getToken();
+                if(!(token.equals("+")||token.equals("-")||token.equals("*")||token.equals("/")||token.equals("%")||token.equals("(")||token.equals(")")||token.matches("\\d+")))
+                    return false;
+            }
+            else {
+                if(!canExpressionBeSimplified((non_Terminal)node))
+                    return false;
+            }
+        }
+        return true;
     }
 }

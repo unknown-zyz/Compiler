@@ -19,6 +19,9 @@ public class CallInst extends Instruction{
         }
     }
 
+    public Function getFunction() {
+        return function;
+    }
 
     @Override
     public boolean hasValue() {

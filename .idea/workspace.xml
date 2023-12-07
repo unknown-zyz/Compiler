@@ -4,7 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5526192a-cff0-4ecb-9587-1af87380061d" name="更改" comment="Lexical" />
+    <list default="true" id="5526192a-cff0-4ecb-9587-1af87380061d" name="更改" comment="add mem2reg">
+      <change beforePath="$PROJECT_DIR$/Backend/MIPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/MIPS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Compiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/Config/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/IRModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/IRModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Type/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Type/Type.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Type/VoidType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Type/VoidType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/GlobalVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/GlobalVar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/Instruction/CallInst.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/Instruction/CallInst.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Visitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/llvm_ir.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/llvm_ir_no_opt.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Compiler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Config/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Config/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/IRModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/IRModule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/Type.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/Type.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/VoidType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/VoidType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/BasicBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/BasicBlock.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/GlobalVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/GlobalVar.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Instruction/CallInst.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Instruction/CallInst.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Value.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Value.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/Optimization/Mem2Reg.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/Optimization/Mem2Reg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir_no_opt.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +47,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -20,8 +56,15 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Compiler.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+    <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="2VVFvnkGdZHFfu3LFvzNho6gPWV" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -31,28 +74,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "工件",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.fileTypes",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/大学/大三上/编译原理/实验/Compiler/LLVM&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.import&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="Push.Settings">
     <option name="SHOW_DETAILS_PANEL" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\大学\大三上\编译原理\实验\Compiler\LLVM" />
+      <recent name="E:\大学\大三上\编译原理\实验\Compiler" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\大学\大三上\编译原理\实验\Compiler" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="Syntax.Node" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="Error" />
     </key>
   </component>
   <component name="RunManager" selected="应用程序.Compiler">
@@ -87,6 +148,75 @@
       <updated>1694913576933</updated>
       <workItem from="1694913577992" duration="11413000" />
       <workItem from="1694931531122" duration="4401000" />
+      <workItem from="1694935982847" duration="212000" />
+      <workItem from="1695019089611" duration="3458000" />
+      <workItem from="1695879959194" duration="21653000" />
+      <workItem from="1696036951281" duration="23768000" />
+      <workItem from="1696211584756" duration="6655000" />
+      <workItem from="1696315128463" duration="4176000" />
+      <workItem from="1696319443873" duration="162000" />
+      <workItem from="1696472195399" duration="12946000" />
+      <workItem from="1696771614118" duration="162000" />
+      <workItem from="1696834761678" duration="1358000" />
+      <workItem from="1696836151443" duration="22327000" />
+      <workItem from="1696896433140" duration="17865000" />
+      <workItem from="1697006908642" duration="15514000" />
+      <workItem from="1697068987911" duration="3495000" />
+      <workItem from="1697194849658" duration="36000" />
+      <workItem from="1697206337470" duration="405000" />
+      <workItem from="1697207225115" duration="1528000" />
+      <workItem from="1697271021088" duration="14143000" />
+      <workItem from="1697334542934" duration="2721000" />
+      <workItem from="1697339205642" duration="399000" />
+      <workItem from="1697342385025" duration="5869000" />
+      <workItem from="1697507133256" duration="9559000" />
+      <workItem from="1697539896489" duration="3583000" />
+      <workItem from="1697959003644" duration="194000" />
+      <workItem from="1698106917597" duration="18166000" />
+      <workItem from="1698193063866" duration="7295000" />
+      <workItem from="1698234081215" duration="6479000" />
+      <workItem from="1698280240605" duration="10315000" />
+      <workItem from="1698482070059" duration="622000" />
+      <workItem from="1698582878175" duration="20833000" />
+      <workItem from="1698712608472" duration="15409000" />
+      <workItem from="1698802780199" duration="1572000" />
+      <workItem from="1698838263304" duration="2798000" />
+      <workItem from="1698884835398" duration="46538000" />
+      <workItem from="1699267647127" duration="6221000" />
+      <workItem from="1699315261309" duration="25631000" />
+      <workItem from="1699362828031" duration="1459000" />
+      <workItem from="1699403657548" duration="11777000" />
+      <workItem from="1699488299982" duration="25005000" />
+      <workItem from="1699596097612" duration="19643000" />
+      <workItem from="1699671570534" duration="3875000" />
+      <workItem from="1699711104390" duration="11894000" />
+      <workItem from="1699770003079" duration="5274000" />
+      <workItem from="1699776173859" duration="827000" />
+      <workItem from="1699862751528" duration="258000" />
+      <workItem from="1699893398350" duration="224000" />
+      <workItem from="1699920796397" duration="8413000" />
+      <workItem from="1700008111465" duration="8000" />
+      <workItem from="1700054540752" duration="839000" />
+      <workItem from="1700102421482" duration="576000" />
+      <workItem from="1700139549035" duration="5745000" />
+      <workItem from="1700186446294" duration="3753000" />
+      <workItem from="1700395413308" duration="1248000" />
+      <workItem from="1700464892520" duration="17059000" />
+      <workItem from="1700526237962" duration="15175000" />
+      <workItem from="1700570683115" duration="36000" />
+      <workItem from="1701078385859" duration="1409000" />
+      <workItem from="1701136181829" duration="8300000" />
+      <workItem from="1701172392641" duration="3248000" />
+      <workItem from="1701223760407" duration="3592000" />
+      <workItem from="1701309641447" duration="11469000" />
+      <workItem from="1701397276136" duration="21730000" />
+      <workItem from="1701498070824" duration="7881000" />
+      <workItem from="1701509655721" duration="11594000" />
+      <workItem from="1701588327460" duration="16729000" />
+      <workItem from="1701655060897" duration="13337000" />
+      <workItem from="1701773728767" duration="3118000" />
+      <workItem from="1701827414977" duration="12606000" />
+      <workItem from="1701931451365" duration="8286000" />
     </task>
     <task id="LOCAL-00001" summary="词法">
       <option name="closed" value="true" />
@@ -112,7 +242,119 @@
       <option name="project" value="LOCAL" />
       <updated>1694935327580</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Lexical fix">
+      <option name="closed" value="true" />
+      <created>1695889066954</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695889066954</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Syntax">
+      <option name="closed" value="true" />
+      <created>1695889138341</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1695889138341</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Syntax">
+      <option name="closed" value="true" />
+      <created>1696213602030</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1696213602030</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Syntax">
+      <option name="closed" value="true" />
+      <created>1696213667332</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1696213667332</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update">
+      <option name="closed" value="true" />
+      <created>1696316863786</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1696316863786</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add 设计文档">
+      <option name="closed" value="true" />
+      <created>1696319566720</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1696319566720</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add printAST">
+      <option name="closed" value="true" />
+      <created>1696475689273</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1696475689273</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add Error">
+      <option name="closed" value="true" />
+      <created>1697356081646</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1697356081646</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add LLVM_1">
+      <option name="closed" value="true" />
+      <created>1699016752232</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1699016752232</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add if_stmt">
+      <option name="closed" value="true" />
+      <created>1699328049044</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1699328049044</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add for,break,continue stmt">
+      <option name="closed" value="true" />
+      <created>1699363074613</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1699363074613</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add llvm_2">
+      <option name="closed" value="true" />
+      <created>1699773514176</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1699773514176</updated>
+    </task>
+    <task id="LOCAL-00016" summary="update structure">
+      <option name="closed" value="true" />
+      <created>1699933647336</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1699933647336</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add mem2reg">
+      <option name="closed" value="true" />
+      <created>1700557535934</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1700557535934</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +374,28 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="词法" />
     <MESSAGE value="Lexical" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lexical" />
+    <MESSAGE value="Lexical fix" />
+    <MESSAGE value="Syntax" />
+    <MESSAGE value="update" />
+    <MESSAGE value="add 设计文档" />
+    <MESSAGE value="add printAST" />
+    <MESSAGE value="add Error" />
+    <MESSAGE value="add LLVM_1" />
+    <MESSAGE value="add if_stmt" />
+    <MESSAGE value="add for,break,continue stmt" />
+    <MESSAGE value="add llvm_2" />
+    <MESSAGE value="update structure" />
+    <MESSAGE value="add mem2reg" />
+    <option name="LAST_COMMIT_MESSAGE" value="add mem2reg" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

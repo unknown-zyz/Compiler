@@ -1,3 +1,4 @@
+import Backend.MIPS;
 import Midend.LLVM.IRModule;
 import Midend.LLVM.Visitor;
 import Frontend.Lexical.Lexer;
@@ -60,9 +61,16 @@ public class Compiler {
                     IROutput.ModuleOutput(module, LLVMPath);
 
                     //removeUselessBLock待实现
-//                    if(Optimizer_Switch)    new Mem2Reg().run(module);
-//                    IROutput.ModuleOutput(module, LLVMOptPath);
+                    if (Optimizer_Switch) {
+                        new Mem2Reg().run(module);
+                        IROutput.ModuleOutput(module, LLVMOptPath);
+                    }
+
+                    if(Mips_Switch) {
+                        new MIPS().run(module);
+                    }
                 }
+
             } else {
                 if (Error_Switch) syntaxMain.printError();
             }

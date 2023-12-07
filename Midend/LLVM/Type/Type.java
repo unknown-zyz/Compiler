@@ -8,4 +8,8 @@ public class Type {
     public boolean isArrayType(){
         return false;
     }
+
+    public boolean isVoidType(){
+        return false;
+    }
 }

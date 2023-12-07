@@ -9,6 +9,7 @@ public class Value {
     private String name;
     private final Type type;
     private final ArrayList<Use> useList;
+    private int val = 0;
 
     public static int valCnt = -1;
 
@@ -37,6 +38,14 @@ public class Value {
     @Override
     public String toString(){
         return this.type + " " + this.name;
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
     }
 
     public void removeOneUse(User user){
