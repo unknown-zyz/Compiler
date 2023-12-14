@@ -6,34 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="5526192a-cff0-4ecb-9587-1af87380061d" name="更改" comment="add mem2reg">
       <change beforePath="$PROJECT_DIR$/Backend/MIPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/MIPS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Memory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Memory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/Config/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/IRModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/IRModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Type/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Type/Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Type/VoidType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Type/VoidType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/GlobalVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/GlobalVar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/Instruction/CallInst.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/Instruction/CallInst.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/IRFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/IRFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/Instruction/GetPtrInst.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/Instruction/GEPInst.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Midend/LLVM/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Visitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/llvm_ir.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/llvm_ir_no_opt.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mips.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Backend/MIPS.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Backend/MIPS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Backend/Memory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Backend/Memory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Compiler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/Config/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Config/Config.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/IRModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/IRModule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/Type.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/Type.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/VoidType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Type/VoidType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/BasicBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/BasicBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/GlobalVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/GlobalVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Instruction/CallInst.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Instruction/CallInst.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Value.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Value.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/IRFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/IRFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/Instruction/GetPtrInst.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Visitor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/Optimization/Mem2Reg.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/Optimization/Mem2Reg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir_no_opt.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/mips.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/test.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/test.java" afterDir="false" />
@@ -216,7 +206,18 @@
       <workItem from="1701655060897" duration="13337000" />
       <workItem from="1701773728767" duration="3118000" />
       <workItem from="1701827414977" duration="12606000" />
-      <workItem from="1701931451365" duration="8286000" />
+      <workItem from="1701931451365" duration="9252000" />
+      <workItem from="1701953935494" duration="1803000" />
+      <workItem from="1702000497783" duration="2484000" />
+      <workItem from="1702021629514" duration="3412000" />
+      <workItem from="1702057508038" duration="14552000" />
+      <workItem from="1702124218910" duration="12690000" />
+      <workItem from="1702211361878" duration="6877000" />
+      <workItem from="1702275596444" duration="9581000" />
+      <workItem from="1702313182175" duration="1288000" />
+      <workItem from="1702377329102" duration="18671000" />
+      <workItem from="1702453831305" duration="7264000" />
+      <workItem from="1702468024607" duration="19735000" />
     </task>
     <task id="LOCAL-00001" summary="词法">
       <option name="closed" value="true" />

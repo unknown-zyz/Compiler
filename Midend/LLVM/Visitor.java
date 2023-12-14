@@ -247,7 +247,7 @@ public class Visitor {
                 indexs.add(new Value("0", IntType.I32));
             for (int i = 0; i < values.size(); i++) {
                 indexs.add(new Value(String.valueOf(i), IntType.I32));
-                curValue = f.buildGetPtrInst(tmpValue, indexs, curBB);
+                curValue = f.buildGEPInst(tmpValue, indexs, curBB);
                 f.buildStoreInst(values.get(i), curValue, curBB);
                 indexs.remove(indexs.size() - 1);
             }
@@ -334,7 +334,7 @@ public class Visitor {
                     indexs.add(new Value("0", IntType.I32));
                 for (int i = 0; i < values.size(); i++) {
                     indexs.add(new Value(String.valueOf(i), IntType.I32));
-                    curValue = f.buildGetPtrInst(tmpValue, indexs, curBB);
+                    curValue = f.buildGEPInst(tmpValue, indexs, curBB);
                     f.buildStoreInst(values.get(i), curValue, curBB);
                     indexs.remove(indexs.size() - 1);
                 }
@@ -618,29 +618,29 @@ public class Visitor {
                     indexs.add(new Value("0", IntType.I32));
                     indexs.add(exp1);
                     indexs.add(exp2);
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                     if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
                 } else if (dim == 1) {
                     indexs.add(new Value("0", IntType.I32));
                     indexs.add(exp1);
                     indexs.add(new Value("0", IntType.I32));
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                 } else {
                     indexs.add(new Value("0", IntType.I32));
                     indexs.add(new Value("0", IntType.I32));
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                 }
             } else    //一维
             {
                 if (dim == 1) {
                     indexs.add(new Value("0", IntType.I32));
                     indexs.add(exp1);
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                     if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
                 } else {
                     indexs.add(new Value("0", IntType.I32));
                     indexs.add(new Value("0", IntType.I32));
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                 }
             }
         } else if (((PointerType) type).getpType() instanceof PointerType pointerType) {
@@ -650,25 +650,25 @@ public class Visitor {
                 if (dim == 2) {
                     indexs.add(exp1);
                     indexs.add(exp2);
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                     if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
                 } else if (dim == 1) {
                     indexs.add(exp1);
                     indexs.add(new Value("0", IntType.I32));
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                 } else {
                     indexs.add(new Value("0", IntType.I32));
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                 }
             } else    //一维
             {
                 if (dim == 1) {
                     indexs.add(exp1);
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                     if (!isAssign) curValue = f.buildLoadInst(curValue, curBB);
                 } else {
                     indexs.add(new Value("0", IntType.I32));
-                    curValue = f.buildGetPtrInst(curValue, indexs, curBB);
+                    curValue = f.buildGEPInst(curValue, indexs, curBB);
                 }
             }
         } else {

@@ -19,60 +19,42 @@ syscall
 .end_macro
 
 .data
-	a: .word 1000
-	str0: .asciiz ""
-	str1: .asciiz ""
+	g_a: .word 0
+	g_b: .word 3
+	g_c: .word 0
+	g_ca: .word 2
+	g_cb: .word 24
+	g_car: .word 1, 2
 
 .text
 
 jal main
 j return
 
-aaa:
+func:
 	sw $ra, 0($sp)
-	lw $a0, 8($sp)
-	lw $a1, 4($sp)
 l0:
-	sw $a0, -4($sp)
-	sw $a1, -8($sp)
 	lw $t0, -4($sp)
 	lw $t1, -8($sp)
 	addu $t2, $t0, $t1
+	sw $t2, -12($sp)
+	lw $t0, -12($sp)
 	lw $ra, 0($sp)
-	move $v0, $t2
-	jr $ra
-
-ab:
-	sw $ra, 0($sp)
-l1:
-	li $t0, 1200
-	la $t1, a
-	sw $t0, 0($t1)
-	lw $ra, 0($sp)
+	move $v0, $t0
 	jr $ra
 
 main:
 	sw $ra, 0($sp)
-l2:
-	subu $sp, $sp, 4
-	jal ab
-	addu $sp, $sp, 4
-	la $t0, a
-	lw $t0, 0($t0)
+l1:
+	li $t0, 3
 	sw $t0, -4($sp)
-	GETINT()
-	move $t0, $v0
+	li $t0, 5
 	sw $t0, -8($sp)
-	lw $t0, -8($sp)
-	lw $t1, -4($sp)
-	subu $sp, $sp, 20
-	sw $t0, 8($sp)
-	sw $t1, 4($sp)
-	jal aaa
-	addu $sp, $sp, 20
+	subu $sp, $sp, 24
+	jal func
+	addu $sp, $sp, 24
 	move $t0, $v0
-	move $a0, $t0
-	PUTINT()
+	sw $t0, -20($sp)
 	lw $ra, 0($sp)
 	li $v0, 0
 	jr $ra

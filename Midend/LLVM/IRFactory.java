@@ -133,13 +133,13 @@ public class IRFactory {
         return brInst;
     }
 
-    public GetPtrInst buildGetPtrInst(Value value, ArrayList<Value> indexs, BasicBlock bb) {
+    public GEPInst buildGEPInst(Value value, ArrayList<Value> indexs, BasicBlock bb) {
         Type type = ((PointerType)value.getType()).getpType();
         for(int i = 1; i < indexs.size();i++)
             type = ((ArrayType)type).getElementType();
-        GetPtrInst getPtrInst = new GetPtrInst(value, indexs, new PointerType(type));
-        bb.addInst(getPtrInst);
-        return getPtrInst;
+        GEPInst GEPInst = new GEPInst(value, indexs, new PointerType(type));
+        bb.addInst(GEPInst);
+        return GEPInst;
     }
 
     public PhiInst buildPhiInst(BasicBlock bb, Type type, ArrayList<Value> values) {

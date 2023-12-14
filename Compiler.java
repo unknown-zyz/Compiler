@@ -46,6 +46,7 @@ public class Compiler {
 //            AST_fileOut.close();
 //
 //            printSymbolTable();
+
             if (isErrorEmpty()) {
                 if (Parser_Switch) {
                     FileOutputStream fileOut = new FileOutputStream(OutputPath);

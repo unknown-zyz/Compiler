@@ -6,9 +6,9 @@ import Midend.LLVM.Type.Type;
 
 import java.util.ArrayList;
 
-public class GetPtrInst extends Instruction {
+public class GEPInst extends Instruction {
 
-    public GetPtrInst(Value value, ArrayList<Value> indexs, Type type) {
+    public GEPInst(Value value, ArrayList<Value> indexs, Type type) {
         super("%" + (++Value.valCnt), type, Operator.GEP);
         this.addOperand(value);
         for (Value index : indexs) {
@@ -26,6 +26,10 @@ public class GetPtrInst extends Instruction {
             indexs.add(getOperand(i));
         }
         return indexs;
+    }
+
+    public Value getLastIndex() {
+        return getOperand(getOperands().size() - 1);
     }
 
     @Override
