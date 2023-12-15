@@ -169,7 +169,6 @@ public class MIPS {
         return null;
     }
 
-    //refactor
     public void allocGp(Value addr, Value value) {
         String name = addr.getName();
         if (symbolTable.containsKey(name)) {
@@ -219,9 +218,6 @@ public class MIPS {
                 write(bb.getName() + ":\n");
                 boolean flag = false;
                 for (Instruction inst : bb.getInsts()) {
-//                    if (!(inst instanceof AllocInst)) {
-//                        getSp(inst.getName(), inst);
-//                    }
                     if (flag) break;
                     if (inst instanceof RetInst || inst instanceof BrInst) {
                         flag = true;
@@ -239,7 +235,6 @@ public class MIPS {
     }
 
     private void translate(Instruction inst) {
-        //reg在使用后就释放!!!!!!
         if (inst instanceof AllocInst) visitAllocInst((AllocInst) inst);
         else if (inst instanceof BinaryInst) visitBinaryInst((BinaryInst) inst);
         else if (inst instanceof BrInst) visitBrInst((BrInst) inst);
@@ -264,14 +259,12 @@ public class MIPS {
         } else if (symbolTable.get(name) instanceof Memory memory) {
             if (memory.getValue() instanceof GlobalVar globalVar) {
                 if (!globalVar.isArray()) {
-                    write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "\n");
+                    write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "_\n");
                 } else {
                     if (memory.getOffReg() == null)
-                        write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "+" + memory.getOff() + "\n");
+                        write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "_+" + memory.getOff() + "\n");
                     else {
-//                        write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "(" + memory.getAddr() + ")\n");
-//                        if (name2Reg(memory.getAddr()) != null) name2Reg(memory.getAddr()).clear();
-                        write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "(" + memory.getOffReg().getName() + ")\n");
+                        write("\tlw " + reg + ", g_" + globalVar.getName().substring(1) + "_(" + memory.getOffReg().getName() + ")\n");
                         memory.getOffReg().clear();
                     }
                 }
@@ -289,7 +282,6 @@ public class MIPS {
             }
         } else if (symbolTable.get(name) instanceof Reg reg0) {
             write("\tmove " + reg + ", " + reg0.getName() + "\n");
-            //!!!!待确定
             reg0.clear();
         }
     }
@@ -298,12 +290,12 @@ public class MIPS {
         Memory memory = (Memory) symbolTable.get(name);
         if (memory.getValue() instanceof GlobalVar globalVar) {
             if (!globalVar.isArray()) {
-                write("\tsw " + reg + ", g_" + globalVar.getName().substring(1) + "\n");
+                write("\tsw " + reg + ", g_" + globalVar.getName().substring(1) + "_\n");
             } else {
                 if (memory.getOffReg() == null)
-                    write("\tsw " + reg + ", g_" + globalVar.getName().substring(1) + "+" + memory.getOff() + "\n");
+                    write("\tsw " + reg + ", g_" + globalVar.getName().substring(1) + "_+" + memory.getOff() + "\n");
                 else {
-                    write("\tsw " + reg + ", g_" + globalVar.getName().substring(1) + "(" + memory.getOffReg().getName() + ")\n");
+                    write("\tsw " + reg + ", g_" + globalVar.getName().substring(1) + "_(" + memory.getOffReg().getName() + ")\n");
                     memory.getOffReg().clear();
                 }
             }
@@ -450,10 +442,10 @@ public class MIPS {
                             } else {                        //参数为全局数组
                                 Reg offReg = memory.getOffReg();
                                 if (offReg != null) {
-                                    write("\tla " + reg.getName() + ", g_" + memory.getValue().getName().substring(1) + "(" + offReg.getName() + ")\n");
+                                    write("\tla " + reg.getName() + ", g_" + memory.getValue().getName().substring(1) + "_(" + offReg.getName() + ")\n");
                                     offReg.clear();
                                 } else
-                                    write("\tla " + reg.getName() + ", g_" + memory.getValue().getName().substring(1) + "+" + memory.getOff() + "\n");
+                                    write("\tla " + reg.getName() + ", g_" + memory.getValue().getName().substring(1) + "_+" + memory.getOff() + "\n");
                             }
                             store(reg.getName(), "$sp", (size - i) * 4);
                             reg.clear();
@@ -552,7 +544,7 @@ public class MIPS {
                 if (off != -1)
                     symbolTable.put(inst.getName(), new Memory("$sp", memory.getOff() + off, new Value("", IntType.I32)));
                 else {
-                    //
+                    // 存memory.off, off保存在offReg中
                     write("\taddiu " + reg1.getName() + ", " + reg1.getName() + ", " + memory.getOff() + "\n");
                     symbolTable.put(inst.getName(), new Memory("$sp", reg1, new Value("", IntType.I32)));
                 }
@@ -617,7 +609,6 @@ public class MIPS {
         } else {
             reg = (Reg) symbolTable.get(inst.getValue().getName());
         }
-//        allocSp(inst.getPointer(), inst.getOperand(0));
         store(reg.getName(), inst.getPointer().getName());
         reg.clear();
     }

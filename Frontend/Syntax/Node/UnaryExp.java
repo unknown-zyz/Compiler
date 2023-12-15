@@ -46,7 +46,7 @@ public class UnaryExp extends non_Terminal {
                 ArrayList<Integer> FParams = getFParamDimension(name);
 //                for(Integer i: FParams)
 //                    System.out.println("F"+i);
-//                System.out.println(getword(getIndex()).getToken());
+//                System.out.println(getword(getIndex()-1).getToken());
                 ArrayList<Integer> RParams = getRParamDimension(getIndex()-1);
 //                System.out.println("RParams size"+RParams.size());
 //                for(Integer i: RParams)
@@ -57,8 +57,8 @@ public class UnaryExp extends non_Terminal {
                     {
                         if(!RParams.get(i).equals(FParams.get(i)))
                         {
-//                            System.out.println("F"+FParams.get(i));
-//                            System.out.println("R"+RParams.get(i));
+                            System.out.println("F"+FParams.get(i));
+                            System.out.println("R"+RParams.get(i));
                             addError(ErrorType.e);
                         }
 
@@ -109,12 +109,23 @@ public class UnaryExp extends non_Terminal {
                 Frontend.Semantic.Symbols.Symbol sym = getSymbol(getword(index).getToken());
                 if(sym instanceof ArraySymbol)
                 {
+                    boolean flag = true;
                     int dim = ((ArraySymbol) sym).getDimension();
                     index++;
-                    while(!getword(index).getToken().equals(",") && !getword(index).getToken().equals(")") && !getword(index).getToken().equals(";") && !isIdent(getword(index)))
+                    //竞速用第一个
+//                    while(!(getword(index).getToken().equals(",") || getword(index).getToken().equals(";") || getword(index).getToken().equals(")") || isIdent(getword(index))) )
+                    while(cnt>0 && !(getword(index).getToken().equals(",") || getword(index).getToken().equals(";") || (flag && (getword(index).getToken().equals(")") || getword(index).getToken().equals("+") || getword(index).getToken().equals("-") || getword(index).getToken().equals("*") || getword(index).getToken().equals("/") || getword(index).getToken().equals("%") || isIdent(getword(index)))  )))
                     {
-                        if(getword(index).getToken().equals("["))
+                        if(getword(index).getToken().equals("[")) {
+                            flag = false;
                             dim--;
+                        }
+                        else if(getword(index).getToken().equals("]"))
+                            flag = true;
+                        else if(getword(index).getToken().equals("("))
+                            cnt++;
+                        else if(getword(index).getToken().equals(")"))
+                            cnt--;
                         index++;
                     }
                     ret.add(dim);

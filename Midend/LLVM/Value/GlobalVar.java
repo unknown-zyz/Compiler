@@ -100,7 +100,7 @@ public class GlobalVar extends Value {
     public String toMIPS() {
         StringBuilder sb = new StringBuilder();
         String name = getName().substring(1);
-        sb.append(name);
+        sb.append(name).append("_");
         if (isArray) {
             ArrayType arrayType = (ArrayType) ((PointerType) getType()).getpType();
             if (isZero()) {

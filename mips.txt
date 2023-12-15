@@ -90,8 +90,17 @@ l6:
 	lw $t0, g_word_+12
 	addu $t1, $t2, $t0
 	sw $t1, -8($sp)
+	lw $t0, -4($sp)
+	subu $sp, $sp, 28
+	sw $t0, 12($sp)
+	la $t0, g_word_+0
+	sw $t0, 8($sp)
+	la $t0, g_z_+0
+	sw $t0, 4($sp)
+	jal f
+	addu $sp, $sp, 28
+	move $t0, $v0
 	subu $sp, $sp, 20
-	li $t0, 103
 	sw $t0, 4($sp)
 	jal rot15
 	addu $sp, $sp, 20
