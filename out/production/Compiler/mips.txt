@@ -20,15 +20,14 @@ syscall
 
 .data
 	g_N_: .word 10
-	g_word_: .word 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-	g_z_: .space 36
+	g_a_: .word 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 .text
 
 jal main
 j return
 
-rot15:
+fib:
 	sw $ra, 0($sp)
 	lw $a0, 4($sp)
 l0:
@@ -57,76 +56,245 @@ l3:
 	li $v0, 2
 	jr $ra
 l4:
+	lw $t0, -4($sp)
+	li $t2, 1
+	subu $t1, $t0, $t2
+	subu $sp, $sp, 12
+	sw $t1, 4($sp)
+	jal fib
+	addu $sp, $sp, 12
+	move $t0, $v0
+	lw $t1, -4($sp)
+	li $t3, 2
+	subu $t2, $t1, $t3
+	subu $sp, $sp, 16
+	sw $t2, 4($sp)
+	sw $t0, 8($sp)
+	jal fib
+	lw $t0, 8($sp)
+	addu $sp, $sp, 16
+	move $t1, $v0
+	addu $t2, $t0, $t1
 	lw $ra, 0($sp)
-	li $v0, 0
-	jr $ra
-
-f:
-	sw $ra, 0($sp)
-	lw $a0, 12($sp)
-	lw $a1, 8($sp)
-	lw $a2, 4($sp)
-l5:
-	sw $a0, -4($sp)
-	sw $a1, -8($sp)
-	sw $a2, -12($sp)
-	lw $ra, 0($sp)
-	li $v0, 1
+	move $v0, $t2
 	jr $ra
 
 main:
 	sw $ra, 0($sp)
-l6:
-	li $t0, 3
+l5:
+	li $t0, 2
 	sw $t0, -4($sp)
+	li $t0, 5
+	sw $t0, -8($sp)
+	li $t0, 1
+	sw $t0, -12($sp)
+	li $t0, 2
+	sw $t0, -16($sp)
+	GETINT()
+	move $t0, $v0
+	sw $t0, -4($sp)
+	GETINT()
+	move $t0, $v0
+	sw $t0, -8($sp)
 	lw $t0, -4($sp)
-	subu $sp, $sp, 16
-	sw $t0, 4($sp)
-	jal rot15
-	addu $sp, $sp, 16
-	move $t0, $v0
-	lw $t1, -4($sp)
-	addu $t2, $t0, $t1
-	lw $t0, g_word_+12
-	addu $t1, $t2, $t0
-	sw $t1, -8($sp)
-	subu $sp, $sp, 20
-	li $t0, 103
-	sw $t0, 4($sp)
-	jal rot15
-	addu $sp, $sp, 20
-	move $t0, $v0
-	lw $t1, -4($sp)
-	subu $sp, $sp, 32
-	sw $t1, 12($sp)
-	la $t1, g_word_+0
-	sw $t1, 8($sp)
-	la $t1, g_z_+0
+	lw $t1, -8($sp)
+	mul $t2, $t0, $t1
+	li $t1, 0
+	subu $t0, $t1, $t2
+	subu $sp, $sp, 28
+	li $t1, 4
 	sw $t1, 4($sp)
-	sw $t0, 16($sp)
-	jal f
-	lw $t0, 16($sp)
-	addu $sp, $sp, 32
+	sw $t0, 8($sp)
+	jal fib
+	lw $t0, 8($sp)
+	addu $sp, $sp, 28
 	move $t1, $v0
-	li $t3, 45
+	mul $t2, $t0, $t1
+	li $t1, 0
+	addu $t0, $t2, $t1
+	lw $t1, g_a_+4
+	li $t3, 1
 	mul $t2, $t1, $t3
 	addu $t1, $t0, $t2
-	lw $t0, g_z_+16
-	subu $sp, $sp, 24
-	sw $t0, 4($sp)
-	sw $t1, 8($sp)
-	jal rot15
-	lw $t1, 8($sp)
-	addu $sp, $sp, 24
-	move $t0, $v0
+	li $t2, 1
+	li $t3, 2
+	div $t0, $t2, $t3
 	subu $t2, $t1, $t0
-	lw $t0, g_z_+20
-	addu $t1, $t2, $t0
-	lw $t0, g_word_+8
-	addu $t2, $t1, $t0
-	sw $t2, -12($sp)
+	li $t1, 5
+	mul $t0, $t2, $t1
+	sw $t0, -4($sp)
+	li $t1, 7
+	li $t2, 5923
+	mul $t0, $t1, $t2
+	li $t2, 56
+	rem $t1, $t0, $t2
+	li $t2, 57
+	mul $t0, $t1, $t2
+	subu $sp, $sp, 28
+	li $t1, 5
+	sw $t1, 4($sp)
+	sw $t0, 8($sp)
+	jal fib
+	lw $t0, 8($sp)
+	addu $sp, $sp, 28
+	move $t1, $v0
+	li $t3, 2
+	addu $t2, $t1, $t3
+	subu $sp, $sp, 28
+	sw $t2, 4($sp)
+	sw $t0, 8($sp)
+	jal fib
+	lw $t0, 8($sp)
+	addu $sp, $sp, 28
+	move $t1, $v0
+	subu $t2, $t0, $t1
+	lw $t0, -12($sp)
+	lw $t1, -16($sp)
+	addu $t3, $t0, $t1
+	li $t1, 1531
+	li $t4, 1
+	div $t0, $t1, $t4
+	li $t4, 6
+	mul $t1, $t0, $t4
+	subu $t0, $t3, $t1
+	li $t3, 2
+	li $t4, 454
+	mul $t1, $t3, $t4
+	subu $t3, $t0, $t1
+	addu $t0, $t2, $t3
+	sw $t0, -8($sp)
+	li $t0, -6
+	sw $t0, -20($sp)
+	j l6
+l6:
+	lw $t0, -4($sp)
+	li $t2, 100
+	slt $t1, $t0, $t2
+	li $t2, 0
+	sne $t0, $t1, $t2
+	beq $t0, $0, l8
+	j l7
+l7:
+	lw $t0, g_a_+0
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+0
+	lw $t0, g_a_+4
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+4
+	lw $t0, g_a_+8
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+8
+	lw $t0, g_a_+12
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+12
+	lw $t0, g_a_+16
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+16
+	lw $t0, g_a_+20
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+20
+	lw $t0, g_a_+24
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+24
+	lw $t0, g_a_+28
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+28
+	lw $t0, g_a_+32
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+32
+	lw $t0, g_a_+36
+	lw $t1, -20($sp)
+	lw $t2, -20($sp)
+	mul $t3, $t1, $t2
+	addu $t1, $t0, $t3
+	sw $t1, g_a_+36
+	j l9
+l8:
+	li $t0, 0
+	sw $t0, -4($sp)
+	j l10
+l9:
+	lw $t0, -4($sp)
+	li $t2, 1
+	addu $t1, $t0, $t2
+	sw $t1, -4($sp)
+	j l6
+l10:
+	lw $t0, -4($sp)
+	li $t2, 10
+	slt $t1, $t0, $t2
+	li $t2, 0
+	sne $t0, $t1, $t2
+	beq $t0, $0, l12
+	j l11
+l11:
+	lw $t0, -4($sp)
+	sll $t0, $t0, 2
+	lw $t1, g_a_($t0)
+	move $a0, $t1
+	PUTINT()
+	li $a0, 44
+	PUTCH()
+	li $a0, 32
+	PUTCH()
+	lw $t0, -4($sp)
+	li $t2, 1
+	addu $t1, $t0, $t2
+	sw $t1, -4($sp)
+	j l13
+l12:
+	li $a0, 10
+	PUTCH()
+	lw $t0, -4($sp)
+	move $a0, $t0
+	PUTINT()
+	li $a0, 44
+	PUTCH()
+	li $a0, 32
+	PUTCH()
+	lw $t0, -8($sp)
+	move $a0, $t0
+	PUTINT()
+	li $a0, 44
+	PUTCH()
+	li $a0, 32
+	PUTCH()
+	lw $t0, -20($sp)
+	move $a0, $t0
+	PUTINT()
+	li $a0, 10
+	PUTCH()
 	lw $ra, 0($sp)
 	li $v0, 0
 	jr $ra
+l13:
+	j l10
 
 return:

@@ -5,20 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5526192a-cff0-4ecb-9587-1af87380061d" name="更改" comment="add mem2reg">
-      <change beforePath="$PROJECT_DIR$/Backend/MIPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/MIPS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/Syntax/Node/UnaryExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Syntax/Node/UnaryExp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Frontend/Syntax/SyntaxMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Syntax/SyntaxMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Midend/LLVM/Value/GlobalVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/Midend/LLVM/Value/GlobalVar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Backend/MIPS.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Backend/MIPS.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Compiler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Frontend/Syntax/Node/UnaryExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Frontend/Syntax/Node/UnaryExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Frontend/Syntax/SyntaxMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Frontend/Syntax/SyntaxMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/GlobalVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Midend/LLVM/Value/GlobalVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/error.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/error.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Compiler/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/mips.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/llvm_ir.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mips.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/mips.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/test.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/设计文档.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/设计文档.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,7 +208,14 @@
       <workItem from="1702468024607" duration="20989000" />
       <workItem from="1702540728301" duration="2193000" />
       <workItem from="1702543298992" duration="9009000" />
-      <workItem from="1702606708645" duration="3129000" />
+      <workItem from="1702606708645" duration="5343000" />
+      <workItem from="1702780543000" duration="1301000" />
+      <workItem from="1702880835971" duration="1985000" />
+      <workItem from="1702889403219" duration="97000" />
+      <workItem from="1702983155818" duration="6254000" />
+      <workItem from="1703059450639" duration="38000" />
+      <workItem from="1703080936096" duration="17000" />
+      <workItem from="1703236690431" duration="945000" />
     </task>
     <task id="LOCAL-00001" summary="词法">
       <option name="closed" value="true" />

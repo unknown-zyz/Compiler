@@ -105,7 +105,6 @@ public class SyntaxMain {
         PrintWriter writer = new PrintWriter(ErrorPath);
         for (Error error : errors) {
             writer.println(error.toString());
-            System.out.println(error.toString());
         }
         writer.close();
     }
