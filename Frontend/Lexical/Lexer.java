@@ -70,7 +70,12 @@ public class Lexer {
                 }
                 int end = pos;
                 String token = str.substring(start, end);
-                Word word = new Word(token, reserved.getOrDefault(token, TokenType.IDENFR), line);
+                TokenType tokenType;
+                if(reserved.containsKey(token))
+                    tokenType = reserved.get(token);
+                else
+                    tokenType = TokenType.IDENFR;
+                Word word = new Word(token, tokenType, line);
                 TokenList.add(word);
             }
             else if(Character.isDigit(cur)) {
