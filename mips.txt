@@ -20,21 +20,50 @@ syscall
 
 .data
 	g_N_: .word 10
-	g_a_: .word 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+	g_a_: .word 0, 1, 2, 3, 4, 5, 6, 7, 8
+	g_b_: .word 1, 2, 3
 
 .text
 
 jal main
 j return
 
+f:
+	sw $ra, 0($sp)
+	lw $a0, 8($sp)
+	lw $a1, 4($sp)
+l0:
+	sw $a0, -4($sp)
+	sw $a1, -8($sp)
+	lw $t0, -4($sp)
+	lw $t1, 16($t0)
+	lw $t0, -8($sp)
+	addu $t2, $t1, $t0
+	lw $ra, 0($sp)
+	move $v0, $t2
+	jr $ra
+
 main:
 	sw $ra, 0($sp)
-l0:
-	lw $t0, g_N_
+l1:
+	lw $t0, g_a_+20
+	move $a0, $t0
+	PUTINT()
+	li $a0, 32
+	PUTCH()
+	lw $t0, g_b_+8
 	move $a0, $t0
 	PUTINT()
 	li $a0, 10
 	PUTCH()
+	lw $t0, g_a_+0
+	subu $sp, $sp, 12
+	la $t1, g_a_+0
+	sw $t1, 8($sp)
+	sw $t0, 4($sp)
+	jal f
+	addu $sp, $sp, 12
+	move $t0, $v0
 	lw $ra, 0($sp)
 	li $v0, 0
 	jr $ra

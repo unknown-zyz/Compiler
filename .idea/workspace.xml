@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5526192a-cff0-4ecb-9587-1af87380061d" name="更改" comment="add mem2reg">
-      <change beforePath="$PROJECT_DIR$/Frontend/Lexical/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Lexical/Lexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/llvm_ir.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mips.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/Frontend/Lexical/Lexer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/Frontend/Lexical/Lexer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/llvm_ir.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/mips.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Compiler/testfile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,6 +214,10 @@
       <workItem from="1703236690431" duration="945000" />
       <workItem from="1703333806307" duration="733000" />
       <workItem from="1703336829690" duration="212000" />
+      <workItem from="1703471478614" duration="2695000" />
+      <workItem from="1703474811916" duration="187000" />
+      <workItem from="1703475027619" duration="144000" />
+      <workItem from="1703502486538" duration="630000" />
     </task>
     <task id="LOCAL-00001" summary="词法">
       <option name="closed" value="true" />
